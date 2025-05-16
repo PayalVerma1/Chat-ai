@@ -1,9 +1,3 @@
-// import { Configuration, OpenAI } from 'openai';
+import { PrismaClient } from "@prisma/client";
 
-// const configuration = new Configuration({
-//     apiKey: process.env.API_KEY,
-// });
-
-// const openai = new OpenAI(configuration);
-
-// export default openai;
+export const prismaClient=new PrismaClient();

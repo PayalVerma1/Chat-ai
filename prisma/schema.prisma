@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 
@@ -28,21 +27,16 @@ model Chat {
   id        String     @id @default(uuid())
   user      User       @relation(fields: [userId], references: [id])
   userId    String
-  messages  Message[]  
+  exchanges  Pair[]  
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 }
 
-model Message {
-  id        String    @id @default(uuid())
-  chat      Chat      @relation(fields: [chatId], references: [id])
-  chatId    String
-  role      Role      
-  content   String
-  createdAt DateTime  @default(now())
-}
-
-enum Role {
-  user
-  assistant
+model Pair{
+  id      String      @id @default(uuid())
+  chat     Chat        @relation(fields:[chatId],references:[id])
+  chatId   String
+  prompt    String
+  response   String
+   createdAt   DateTime @default(now())
 }
