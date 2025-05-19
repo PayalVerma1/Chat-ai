@@ -37,6 +37,7 @@ export default function AppBar() {
       setResponse(data.pair?.response || "No response");
     } catch (err) {
       setResponse("Error fetching response.");
+      console.error(err);
     }
     setLoading(false);
   };
