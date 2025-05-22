@@ -8,7 +8,7 @@ const groq = new Groq({
   apiKey: process.env.API_KEY!,
 });
 
-// GET: Fetch a chat and its prompt-response pairs
+
 export async function GET(req: NextRequest) {
   try {
     const id = req.nextUrl.searchParams.get("id");
@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
     const chat = await prismaClient.chat.findUnique({
       where: { id },
       include: {
-        exchanges: true, // includes the prompt-response pairs
+        exchanges: true, 
       },
     });
 
@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// POST: Create a chat and save prompt-response pair
+
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
