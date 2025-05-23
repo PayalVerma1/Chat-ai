@@ -1,7 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Fullchat } from "@/store/chatStore";
 import { useChatStore } from "@/store/chatStore";
 import axios from "axios";
 export default function ChatPage() {
