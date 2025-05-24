@@ -5,6 +5,7 @@ import { useChatStore } from "@/store/chatStore";
 import axios from "axios";
 export default function ChatPage() {
   const { id } = useParams();
+  const [input, setInput] = useState("");
   const { chat, addChat, clearChat } = useChatStore();
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -23,6 +24,25 @@ export default function ChatPage() {
     };
     fetchChat();
   },[id]);
+  const addPrompt = async (newPrompt: string) => {
+    try {
+      const res = await axios.post("/api/chat", {
+        prompt: newPrompt,
+        chatId: id,
+      });
+      const updatedChat = res.data;
+      addChat(updatedChat);
+      setInput("");
+    } catch (error) {
+      console.log("Error sending prompt:", error);
+    }
+  };
+    const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+    addPrompt(input);
+  };
+  
   if (loading) return <div>Loading...</div>;
   return (
      <div>
