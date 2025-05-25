@@ -1,56 +1,70 @@
 import { create } from 'zustand';
-import {Chat,Pair} from "@prisma/client"
+import { Chat, Pair } from "@prisma/client";
 import { persist } from 'zustand/middleware';
-export type Fullchat=Chat & {
-    exchanges:Pair[]
-}
+
+export type Fullchat = Chat & {
+  exchanges: Pair[];
+};
+
 interface ChatStore {
-    //chat is a object of type FullChat
-    chat:Fullchat|null;
-    //chats is the array of type FullChat and chat is a array of pair 
-    addChat: (chats: Fullchat) => void;
-    clearChat: () => void;
-    addPair: (pair: Pair) => void;
-    clearPair: () => void;
-   
+  chat: Fullchat | null;
+  chats: Fullchat[]; 
+  addChat: (chat: Fullchat) => void;
+  setChats: (chats: Fullchat[]) => void;
+  clearChat: () => void;
+  addPair: (pair: Pair) => void;
+  clearPair: () => void;
 }
 
-export const useChatStore=create<ChatStore>()(
-    persist(
-       (set)=>({
-        chat: null,
-        //chat:data.data passed chat/[id]
-        addChat: (chats: Fullchat) => set(() => ({ chat: chats })),
-        clearChat: () => set(() => ({ chat: null })),
-        addPair: (pair: Pair) =>
-         set((state)=>{
-            if(!state.chat){
-                console.log('no chat is active to add pair')
-               return state; 
-            }
-          return {
-            chat: {
-              ...state.chat,
-              exchanges: [...state.chat.exchanges, pair],
-            },
-          };
-        }),
-        clearPair: () =>
-        set((state) => {
-          if (!state.chat) {
-            console.warn("No active chat to clear pairs.");
-            return state;
-          }
-          return {
-            chat: {
-              ...state.chat,
-              exchanges: [],
-            },
-          };
-        }),
+export const useChatStore = create<ChatStore>()(
+  persist(
+    (set) => ({
+      chat: null,
+      chats: [],
+      addChat: (chat: Fullchat) =>
+        set((state) => ({
+          chat,
+          chats: state.chats.some((c) => c.id === chat.id)
+            ? state.chats
+            : [...state.chats, chat],
+        })),
+      setChats: (chats: Fullchat[]) => set(() => ({ chats })), 
+      clearChat: () => set(() => ({ chat: null })),
+      addPair: (pair: Pair) =>
+        set((state) =>
+          state.chat
+            ? {
+                chat: {
+                  ...state.chat,
+                  exchanges: [...state.chat.exchanges, pair],
+                },
+                chats: state.chats.map((c) =>
+                  c.id === state.chat!.id
+                    ? {
+                        ...c,
+                        exchanges: [...c.exchanges, pair],
+                      }
+                    : c
+                ),
+              }
+            : state
+        ),
+      clearPair: () =>
+        set((state) =>
+          state.chat
+            ? {
+                chat: { ...state.chat, exchanges: [] },
+                chats: state.chats.map((c) =>
+                  c.id === state.chat!.id
+                    ? { ...c, exchanges: [] }
+                    : c
+                ),
+              }
+            : state
+        ),
     }),
-      {
-        name: "Chat Store"
-      }
-    )
-)
+    {
+      name: "Chat Store",
+    }
+  )
+);
