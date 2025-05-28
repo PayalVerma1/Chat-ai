@@ -5,10 +5,10 @@ import SideBar from "./components/SideBar";
 export default function Home() {
   return (
     <div className="flex h-screen">
-      <SideBar />
-    <div><AppBar/>
-    <ChatPage/>
-    </div> 
+     
+   
+    <SideBar />
+     <ChatPage/>
     </div>
   );
 }

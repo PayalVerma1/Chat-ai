@@ -23,40 +23,27 @@ export default function ChatPage() {
       }
     };
     fetchChat();
-  },[id]);
-  const addPrompt = async (newPrompt: string) => {
-    try {
-      const res = await axios.post("/api/chat", {
-        prompt: newPrompt,
-        chatId: id,
-      });
-      const updatedChat = res.data;
-      addChat(updatedChat);
-      setInput("");
-    } catch (error) {
-      console.log("Error sending prompt:", error);
-    }
-  };
-    const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-    addPrompt(input);
-  };
+  }, [id]);
   
   if (loading) return <div>Loading...</div>;
   return (
-     <div>
+    <div>
+      {chat &&
+        chat.exchanges.map((pair) => (
+          <div key={pair.id} className="flex flex-col gap-4">
+            <div className="flex justify-end">
+              <p className="p-4 m-2 mr-12 border-2 rounded-2xl bg-blue-100 max-w-xs">
+                <strong>You:</strong> {pair.prompt}
+              </p>
+            </div>
+            <div className="flex justify-start">
+              <p className="m-2 ml-12 p-4 border-2 rounded-2xl bg-amber-100 max-w-xs">
+                <strong>AI:</strong> {pair.response}
+              </p>
+            </div>
+          </div>
+        ))}
      
-      {chat && chat.exchanges.map((pair) => (
-        <div key={pair.id}>
-          <p><strong>You:</strong> {pair.prompt}</p>
-          <p><strong>AI:</strong> {pair.response}</p>
-        </div>
-      ))}
-     <form onSubmit={handleSubmit}>
-      <input type="text" placeholder="Type something here..." value={input} onChange={(e) => setInput(e.target.value)} className="border p-2 w-full" />
-    <button type="submit">Send</button>
-     </form>
     </div>
   );
 }
