@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import axios from "axios";
 import { useEffect } from "react";
-
 export default function SideBar() {
   const { chats , setChats} = useChatStore();
   const pathname = usePathname(); 

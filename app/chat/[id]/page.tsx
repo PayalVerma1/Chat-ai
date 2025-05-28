@@ -46,13 +46,17 @@ export default function ChatPage() {
   if (loading) return <div>Loading...</div>;
   return (
      <div>
-      <h1>Chat Page</h1>
+     
       {chat && chat.exchanges.map((pair) => (
         <div key={pair.id}>
           <p><strong>You:</strong> {pair.prompt}</p>
           <p><strong>AI:</strong> {pair.response}</p>
         </div>
       ))}
+     <form onSubmit={handleSubmit}>
+      <input type="text" placeholder="Type something here..." value={input} onChange={(e) => setInput(e.target.value)} className="border p-2 w-full" />
+    <button type="submit">Send</button>
+     </form>
     </div>
   );
 }
