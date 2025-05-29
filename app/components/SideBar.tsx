@@ -2,7 +2,7 @@
 import { useChatStore } from "@/store/chatStore";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import InputBox from "./InputBox";
+
 import AppBar from "./AppBar";
 import axios from "axios";
 import { useEffect } from "react";
@@ -24,7 +24,7 @@ export default function SideBar() {
   return (
     <div className="w-64 bg-gray-200 p-4 h-screen flex flex-col ">
       <h2 className="text-xl font-bold mb-4">Chat-ai</h2>
-      <InputBox />
+     
      <div className=" flex flex-col grow overflow-y-auto"> 
       <ul className="space-y-2 ">
         {chats.length > 0 ? (
