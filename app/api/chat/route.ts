@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Chat not found" }, { status: 404 });
       }
     } else {
-      // Create a new chat
+    
       chat = await prismaClient.chat.create({
         data: { userId: user.id },
       });
