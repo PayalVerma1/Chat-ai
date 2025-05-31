@@ -43,3 +43,7 @@ Resume existing chats when opened
 Automatically update the UI after sending a new message
 
 Close or reset a chat from anywhere in the app
+
+## web flow
+User types prompt ➜ Send to backend ➜ Receive response ➜ Create newPair ➜ Call addPair(newPair)->newPair added 
+

@@ -8,7 +8,6 @@ const groq = new Groq({
   apiKey: process.env.API_KEY!,
 });
 
-
 export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
@@ -43,14 +42,14 @@ export async function GET(req: NextRequest) {
     });
 
     return NextResponse.json({ chats: user?.chats ?? [] }, { status: 200 });
-
   } catch (error) {
     console.error("GET Chat Error:", error);
-    return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
-
-
 
 export async function POST(req: NextRequest) {
   try {
@@ -59,9 +58,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { prompt ,chatId } = await req.json();
+    const { prompt, chatId } = await req.json();
     if (!prompt) {
-      return NextResponse.json({ error: "No content provided" }, { status: 400 });
+      return NextResponse.json(
+        { error: "No content provided" },
+        { status: 400 }
+      );
     }
 
     const response = await groq.chat.completions.create({
@@ -79,16 +81,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-   let chat;
-   if(chatId){
-    chat= await prismaClient.chat.findUnique({
-      where: { id: chatId },
-    });
-    if (!chat) {
+    let chat;
+    if (chatId) {
+      chat = await prismaClient.chat.findUnique({
+        where: { id: chatId },
+      });
+      if (!chat) {
         return NextResponse.json({ error: "Chat not found" }, { status: 404 });
       }
     } else {
-    
       chat = await prismaClient.chat.create({
         data: { userId: user.id },
       });
@@ -101,6 +102,7 @@ export async function POST(req: NextRequest) {
         response: aiResponse,
       },
     });
+
     const updatedChat = await prismaClient.chat.findUnique({
       where: { id: chat.id },
       include: { exchanges: true },
@@ -109,6 +111,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(updatedChat, { status: 200 });
   } catch (error) {
     console.error("POST Chat Error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
