@@ -14,11 +14,13 @@
     "daisyui": "^5.0.42",
     "dotenv": "^16.5.0",
     "groq-sdk": "^0.21.0",
+    "lucide-react": "^0.511.0",
     "next": "15.3.2",
     "next-auth": "^4.24.11",
     "openai": "^4.98.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-textarea-autosize": "^8.5.9",
     "swr": "^2.3.3",
     "zustand": "^5.0.5"
   },
