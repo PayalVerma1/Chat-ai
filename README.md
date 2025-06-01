@@ -63,6 +63,9 @@ After some trial and error, I decided to keep the prompt-response pairs as a lis
 Another major challenge was managing multiple chats. Initially, each new session wasn't properly isolated — either new chat was created for each prompt , or the messages would appear in the wrong place.
 
 **How I Solved It**:  
+
 I implemented a dedicated route that checks if a chat ID is passed. If no ID is provided, a new chat session is created and the user is redirected to a unique route containing the new chat ID. This allowed me to display and resume conversations based on specific IDs, keeping each chat separate and persistent which helped me to add new content to the previous chat if sent.
 
+## Chat Deletion Handling:
 
+Due to foreign key constraints preventing automatic deletion of related message pairs when deleting a chat, adding onDelete: Cascade in the Prisma schema did not resolve the issue. To fix this, related message pairs are manually deleted using deleteMany with the chat ID before deleting the chat itself. This ensures no foreign key violations occur during chat deletion.
