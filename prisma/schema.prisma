@@ -18,23 +18,23 @@ model User {
   id        String    @id @default(uuid())
   email     String    @unique
   name      String?
-  chats     Chat[]   
+  chats     Chat[]    // A user can have multiple chats
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
 
 model Chat {
   id        String     @id @default(uuid())
-  user      User       @relation(fields: [userId], references: [id])
+  user      User       @relation(fields: [userId], references: [id])  // Connects to User
   userId    String
-  exchanges  Pair[]  
+  exchanges Pair[]        // A chat has many exchanges (messages) 
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 }
 
 model Pair{
   id      String      @id @default(uuid())
-  chat     Chat        @relation(fields:[chatId],references:[id])
+  chat     Chat        @relation(fields:[chatId],references:[id] , onDelete: Cascade)
   chatId   String
   prompt    String
   response   String

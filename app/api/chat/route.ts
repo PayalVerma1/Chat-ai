@@ -117,3 +117,35 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user?.email) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const id = req.nextUrl.searchParams.get("id");
+    console.log("DELETE Chat ID:", id);
+    if (!id) {
+      return NextResponse.json({ error: "Chat ID is required" }, { status: 400 });
+    }
+    
+    const chat = await prismaClient.chat.findUnique({
+      where: { id },
+    });
+    if (!chat) {
+      return NextResponse.json({ error: "Chat not found" }, { status: 404 });
+    }
+    await prismaClient.pair.deleteMany({ where: { chatId: id } });
+    await prismaClient.chat.delete({
+      where: { id },
+    });
+    return NextResponse.json({ message: "Chat deleted successfully" }, { status: 200 });
+  } catch (error) {
+    console.error("DELETE Chat Error:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  } 
+}

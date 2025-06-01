@@ -36,6 +36,7 @@ export default function ChatPage() {
     
     fetchChat();
   }, [id, addChat, router]);
+  
 
   const sendMessage = async (message: string) => {
     setSending(true);
@@ -61,6 +62,16 @@ export default function ChatPage() {
     if (!input.trim() || sending) return;
     sendMessage(input);
   };
+  const deleteMessage=async()=>{
+    if (!id) return;
+    try {
+      await axios.delete(`/api/chat?id=${id}`);
+      router.push('/chat/new');
+    } catch (error: any) {
+      console.error("Error deleting chat:", error);
+      alert("Failed to delete chat. Please try again.");
+    }
+  }
 
   if (loading) {
     return (
@@ -75,6 +86,12 @@ export default function ChatPage() {
       {/* Header */}
       <div className="bg-white border-b p-4 shadow-sm">
         <h1 className="text-xl font-semibold">Chat</h1>
+         <button
+    onClick={deleteMessage}
+    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+  >
+    Delete Chat
+  </button>
       </div>
 
       {/* Messages */}
