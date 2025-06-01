@@ -14,10 +14,10 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (!id) {
-      router.push('/chat/new');
+      router.push("/chat/new");
       return;
     }
-    
+
     const fetchChat = async () => {
       try {
         const res = await axios.get(`/api/chat?id=${id}`);
@@ -27,16 +27,15 @@ export default function ChatPage() {
       } catch (error: any) {
         console.error("Error fetching chat:", error);
         if (error.response?.status === 404) {
-          router.push('/chat/new');
+          router.push("/chat/new");
         }
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchChat();
   }, [id, addChat, router]);
-  
 
   const sendMessage = async (message: string) => {
     setSending(true);
@@ -45,7 +44,7 @@ export default function ChatPage() {
         prompt: message,
         chatId: Array.isArray(id) ? id[0] : id,
       });
-      
+
       const updatedChat = res.data;
       addChat(updatedChat);
       setInput("");
@@ -62,16 +61,16 @@ export default function ChatPage() {
     if (!input.trim() || sending) return;
     sendMessage(input);
   };
-  const deleteMessage=async()=>{
+  const deleteMessage = async () => {
     if (!id) return;
     try {
       await axios.delete(`/api/chat?id=${id}`);
-      router.push('/chat/new');
+      router.push("/chat/new");
     } catch (error: any) {
       console.error("Error deleting chat:", error);
       alert("Failed to delete chat. Please try again.");
     }
-  }
+  };
 
   if (loading) {
     return (
@@ -83,35 +82,37 @@ export default function ChatPage() {
 
   return (
     <div className="flex flex-col h-screen bg-gray-50">
-      {/* Header */}
+    
       <div className="bg-white border-b p-4 shadow-sm">
         <h1 className="text-xl font-semibold">Chat</h1>
-         <button
-    onClick={deleteMessage}
-    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-  >
-    Delete Chat
-  </button>
+        <button
+          onClick={deleteMessage}
+          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+        >
+          Delete Chat
+        </button>
       </div>
 
-      {/* Messages */}
+    
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {chat && chat.exchanges && chat.exchanges.length > 0 ? (
           chat.exchanges.map((exchange) => (
             <div key={exchange.id} className="space-y-4">
-              {/* User Message */}
               <div className="flex justify-end">
                 <div className="max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl bg-blue-500 text-white p-3 rounded-lg shadow">
                   <div className="font-semibold text-sm mb-1">You</div>
                   <div className="whitespace-pre-wrap">{exchange.prompt}</div>
                 </div>
               </div>
-              
-              {/* AI Response */}
+
               <div className="flex justify-start">
                 <div className="max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl bg-white border p-3 rounded-lg shadow">
-                  <div className="font-semibold text-sm mb-1 text-gray-700">AI Assistant</div>
-                  <div className="whitespace-pre-wrap text-gray-800">{exchange.response}</div>
+                  <div className="font-semibold text-sm mb-1 text-gray-700">
+                    AI Assistant
+                  </div>
+                  <div className="whitespace-pre-wrap text-gray-800">
+                    {exchange.response}
+                  </div>
                 </div>
               </div>
             </div>
@@ -124,18 +125,26 @@ export default function ChatPage() {
             </div>
           </div>
         )}
-        
+
         {/* Sending indicator */}
         {sending && (
           <div className="flex justify-start">
             <div className="max-w-xs bg-gray-200 p-3 rounded-lg">
-              <div className="font-semibold text-sm mb-1 text-gray-700">AI Assistant</div>
+              <div className="font-semibold text-sm mb-1 text-gray-700">
+                AI Assistant
+              </div>
               <div className="flex items-center space-x-1">
                 <div className="animate-pulse">Thinking...</div>
                 <div className="flex space-x-1">
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                  <div
+                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                    style={{ animationDelay: "0.1s" }}
+                  ></div>
+                  <div
+                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                    style={{ animationDelay: "0.2s" }}
+                  ></div>
                 </div>
               </div>
             </div>

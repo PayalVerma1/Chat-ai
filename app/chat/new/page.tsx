@@ -13,7 +13,7 @@ export default function NewChatPage() {
     try {
       const res = await axios.post("/api/chat", {
         prompt: prompt,
-        // No chatId here -beacuse it creates a new chat otherwise if chatId is provided it will create new chat for every prompt
+        // No chatId here -beacuse it creates a new chat and all the other prompt get its id otherwise if chatId is provided it will create new chat for every prompt
       });
 
       const newChat = res.data;
