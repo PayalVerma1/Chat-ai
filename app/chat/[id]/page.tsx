@@ -94,7 +94,7 @@ export default function ChatPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+      <div className="flex flex-col items-center justify-center h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 w-screen overflow-x-hidden">
         <Loader2 className="h-10 w-10 animate-spin text-blue-500 mb-4" />
         <div className="text-xl font-medium">Loading chat...</div>
       </div>
@@ -104,7 +104,7 @@ export default function ChatPage() {
   const hasExchanges = chat && chat.exchanges && chat.exchanges.length > 0;
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div className="flex flex-col h-screen w-6xl bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-x-hidden">
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 shadow-sm flex justify-between items-center px-4 sm:px-6 lg:px-8">
         <h1 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
           Chat with AI
@@ -119,9 +119,9 @@ export default function ChatPage() {
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar">
+      <div className="flex-1 overflow-y-auto px-4 py-6 custom-scrollbar w-full">
         {hasExchanges ? (
-          <div className="max-w-6xl mx-auto space-y-6">
+          <div className="space-y-6 w-full">
             {chat.exchanges.map((exchange) => (
               <div key={exchange.id}>
                 <div className="flex items-start justify-end space-x-3 mb-4">
