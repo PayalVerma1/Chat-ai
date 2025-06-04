@@ -4,7 +4,7 @@ import ChatPage from "./chat/[id]/page";
 
 export default function Home() {
   return (
-    <div className="flex h-screen ">
+    <div className="flex min-h-screen ">
      
    
    

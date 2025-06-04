@@ -27,8 +27,8 @@ export default function SideBar() {
   };
 
   return (
-    <div className="flex h-screen w-64 flex-col bg-gray-900 text-gray-200">
-      <div className="flex items-center justify-between p-5 pb-0">
+    <div className="flex flex-wrap min-h-screen w-64 flex-col bg-gray-900 text-gray-200">
+      <div className="flex items-center justify-center p-5 pb-0">
         <h2 className="text-xl font-semibold  text-gray-50">Chat-Ai</h2>
       </div>
       <div className="p-4">

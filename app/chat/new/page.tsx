@@ -32,7 +32,7 @@ export default function NewChatPage() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <div className="flex-1 flex items-center justify-center p-4">
         <div className="text-center w-full px-4 sm:px-6 md:px-12 lg:px-20 xl:px-40 2xl:px-60">
           <h1 className="text-4xl font-extrabold mb-4 text-gray-800 dark:text-gray-200">
