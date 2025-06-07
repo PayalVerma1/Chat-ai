@@ -6,7 +6,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import AppBar from "./AppBar";
 
-export default function SideBar() {
+type SideBarProps = {
+  className?: string;
+};
+
+export default function SideBar({ className = "" }: SideBarProps) {
   const { chats, setChats } = useChatStore();
   const pathname = usePathname();
   const router = useRouter();
@@ -38,7 +42,7 @@ export default function SideBar() {
   };
 
   return (
-    <>
+    <div className={` ${className}`}>
       <button
         onClick={toggleMobileMenu}
         className="fixed top-4 left-4 z-50 md:hidden rounded-lg bg-gray-800 p-2 text-gray-200 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
@@ -77,7 +81,7 @@ export default function SideBar() {
 
       <div
         className={`
-          fixed inset-y-0 left-0 z-40 flex min-h-screen flex-col bg-gray-900 text-gray-200 transition-transform duration-300 ease-in-out
+          fixed inset-y-0 left-0 z-40 flex min-h-screen max-h-screen flex-col bg-gray-900 text-gray-200 transition-transform duration-300 ease-in-out
           md:relative md:translate-x-0 md:w-64
           ${
             isMobileMenuOpen
@@ -86,7 +90,7 @@ export default function SideBar() {
           }
         `}
       >
-        <div className="flex items-center justify-between p-5 pb-0">
+        <div className="flex items-center justify-between p-5 pb-0 flex-shrink-0">
           <h2 className="text-xl font-semibold text-gray-50">Chat-Ai</h2>
 
           <button
@@ -110,7 +114,7 @@ export default function SideBar() {
           </button>
         </div>
 
-        <div className="p-4">
+        <div className="p-4 flex-shrink-0">
           <button
             onClick={handleNewChat}
             className="group flex w-full items-center justify-center space-x-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-200 transition-colors hover:border-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900"
@@ -133,7 +137,7 @@ export default function SideBar() {
           </button>
         </div>
 
-        <div className="flex-grow overflow-y-auto px-4 pb-4">
+        <div className="flex-1 overflow-y-auto px-4 pb-4 min-h-0">
           <ul className="space-y-2">
             {chats.length > 0 ? (
               chats.map((chat) => (
@@ -160,10 +164,10 @@ export default function SideBar() {
           </ul>
         </div>
 
-        <div className="border-t border-gray-800 p-4">
+        <div className="border-t border-gray-800 p-4 flex-shrink-0">
           <AppBar />
         </div>
       </div>
-    </>
+    </div>
   );
 }

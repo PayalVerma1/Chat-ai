@@ -31,9 +31,19 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       ><Providers>
        
-          <div className="flex">
-            <SideBar />
-            <main className="flex">
+          <div className="flex h-screen">
+            {/* Sidebar Desktop */}
+            <div className="hidden md:block">
+              <SideBar className="w-64 h-full" />
+            </div>
+
+            {/* Sidebar Mobile */}
+            <div className="md:hidden">
+              <SideBar className="fixed inset-y-0 left-0 z-40 w-64" />
+            </div>
+
+            {/* Main Chat Area */}
+            <main className="flex-1 h-full overflow-y-auto">
               {children}
             </main>
           </div>
