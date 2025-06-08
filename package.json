@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.1",
+    "@prisma/adapter-neon": "^6.9.0",
     "@prisma/client": "^6.8.2",
     "axios": "^1.9.0",
     "class-variance-authority": "^0.7.1",
