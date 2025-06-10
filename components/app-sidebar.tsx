@@ -43,7 +43,7 @@ export default function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xl font-semibold px-3 pt-4 text-gray-50">
+          <SidebarGroupLabel className="text-xl font-semibold px-4 pb-3 pt-4  text-gray-50">
             Chat-Ai
           </SidebarGroupLabel>
 
@@ -100,7 +100,7 @@ export default function AppSidebar() {
         </SidebarGroup>
 
         {/* Footer */}
-        <div className="border-t border-gray-800 p-4 mt-auto">
+        <div className="border-t border-gray-800 p-3 mt-auto">
           <AppBar />
         </div>
       </SidebarContent>

@@ -32,7 +32,7 @@ export default function RootLayout({
         <Providers>
           <SidebarProvider>
         
-              <div className="flex h-screen">
+              <div className="flex w-full h-screen">
                 {/* Sidebar always visible */}
                 <AppSidebar />
 
