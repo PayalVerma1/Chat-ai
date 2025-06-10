@@ -108,7 +108,7 @@ export default function ChatPage() {
     return (
       <div className="flex flex-col items-center justify-center h-full w-full">
         <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
-        <p className="mt-2 text-gray-600">Loading chat...</p>
+        <p className=" text-gray-600">Loading chat...</p>
       </div>
     );
   }
@@ -118,7 +118,7 @@ export default function ChatPage() {
   return (
     <div className="flex flex-col h-full w-full">
       <div className="flex items-center justify-between p-4 border-b border-gray-200">
-        <h1 className="text-xl font-semibold text-gray-800">Chat with AI</h1>
+        <h1 className="text-xl font-semibold text-white">Chat with AI</h1>
         <button
           onClick={deleteChatConfirm}
           className="flex items-center gap-2 text-red-500 hover:text-red-600 transition-colors duration-200"

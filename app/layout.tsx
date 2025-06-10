@@ -1,19 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
-import SideBar from "./components/SideBar";
-import Hydration from "@/store/Hydration";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import AppSidebar from "@/components/app-sidebar";
 
 export const metadata: Metadata = {
   title: "Chat-ai",
@@ -27,29 +17,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      ><Providers>
-       
-          <div className="flex h-screen">
-            {/* Sidebar Desktop */}
-            <div className="hidden md:block">
-              <SideBar className="w-64 h-full" />
-            </div>
+      <body className="font-sans antialiased">
+        <Providers>
+          <SidebarProvider>
+            <div className="flex h-screen">
+              {/* Sidebar always visible */}
+              <AppSidebar />
 
-            {/* Sidebar Mobile */}
-            <div className="md:hidden">
-              <SideBar className="fixed inset-y-0 left-0 z-40 w-64" />
+              {/* Main content */}
+              <main className="flex-1 overflow-y-auto">
+                <SidebarTrigger />
+                {children}
+              </main>
             </div>
-
-            {/* Main Chat Area */}
-            <main className="flex-1 h-full overflow-y-auto">
-              {children}
-            </main>
-          </div>
-        
+          </SidebarProvider>
         </Providers>
-
       </body>
     </html>
   );
