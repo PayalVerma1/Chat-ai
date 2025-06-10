@@ -32,7 +32,7 @@ export default function NewChatPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 ">
+    <div className="flex flex-col h-full w-full bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 ">
       <div className="flex-1 flex items-center justify-center p-4">
         <div className="text-center w-full px-4 sm:px-6 md:px-12 lg:px-20 xl:px-40 2xl:px-60">
           <h1 className="text-4xl font-extrabold mb-4 text-gray-800 dark:text-gray-200">
@@ -67,7 +67,7 @@ export default function NewChatPage() {
       </div>
 
       <div className="sticky bottom-0 left-0 w-full bg-white dark:bg-gray-800 shadow-lg p-4 border-t border-gray-200 dark:border-gray-700">
-        <div className="w-full max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="w-full px-4 sm:px-6">
           <form onSubmit={handleSubmit} className="flex items-center gap-2">
             <div className="relative flex-grow">
               <input

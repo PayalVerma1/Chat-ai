@@ -1,9 +1,20 @@
 import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/app-sidebar";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Chat-ai",
@@ -16,20 +27,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="font-sans antialiased">
+    <html lang="en" className="dark">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
           <SidebarProvider>
-            <div className="flex h-screen">
-              {/* Sidebar always visible */}
-              <AppSidebar />
+        
+              <div className="flex h-screen">
+                {/* Sidebar always visible */}
+                <AppSidebar />
 
-              {/* Main content */}
-              <main className="flex-1 overflow-y-auto">
-                <SidebarTrigger />
-                {children}
-              </main>
-            </div>
+                {/* Main content */}
+                <main className="flex-1 flex flex-col h-full w-full overflow-y-auto">
+                  <SidebarTrigger />
+                  {children}
+                </main>
+              </div>
+          
           </SidebarProvider>
         </Providers>
       </body>
