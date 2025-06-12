@@ -204,7 +204,7 @@ export default function ChatPage() {
                 handleSubmit(e);
               }
             }}
-            className="flex-1 resize-none p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm disabled:bg-gray-50 disabled:cursor-not-allowed"
+            className="flex-1 resize-none p-3 border border-gray-300 rounded-lg  text-black focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm disabled:bg-gray-50 disabled:cursor-not-allowed"
           />
           <button
             type="submit"

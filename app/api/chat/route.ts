@@ -7,6 +7,9 @@ import { authOptions } from "@/lib/auth";
 const groq = new Groq({
   apiKey: process.env.API_KEY!,
 });
+const gemini=new Gemini({
+  apiKey: process.env.GEMINI_API_KEY!,
+});
 
 export async function GET(req: NextRequest) {
   try {

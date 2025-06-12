@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import axios from "axios";
 import AppBar from "@/app/components/AppBar";
+import PaymentPage from "@/app/components/payments";
 
 import {
   Sidebar,
@@ -100,8 +101,10 @@ export default function AppSidebar() {
         </SidebarGroup>
 
         {/* Footer */}
+ 
         <div className="border-t border-gray-800 p-3 mt-auto">
           <AppBar />
+           <PaymentPage />
         </div>
       </SidebarContent>
     </Sidebar>
