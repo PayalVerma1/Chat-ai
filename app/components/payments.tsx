@@ -9,7 +9,7 @@ declare global {
 }
 
 const PaymentPage = () => {
-  const Amount = 100; // Amount in INR
+  const Amount = 100; 
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handlePayment = async () => {
@@ -22,8 +22,8 @@ const PaymentPage = () => {
       const data = await payment.json();
 
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Use NEXT_PUBLIC for client-side
-        amount: Amount * 100, // Razorpay expects amount in paise
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, 
+        amount: Amount * 100, 
         currency: "INR",
         name: "Chat-AI",
         description: "Test Transaction",

@@ -1,5 +1,8 @@
 import { NextResponse, NextRequest } from "next/server";
 import Groq from "groq-sdk";
+
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
 import { prismaClient } from "@/lib/db";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
@@ -7,9 +10,7 @@ import { authOptions } from "@/lib/auth";
 const groq = new Groq({
   apiKey: process.env.API_KEY!,
 });
-const gemini=new Gemini({
-  apiKey: process.env.GEMINI_API_KEY!,
-});
+const gemini = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export async function GET(req: NextRequest) {
   try {
@@ -61,20 +62,45 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { prompt, chatId } = await req.json();
+    const { prompt, chatId, modelProvider } = await req.json();
     if (!prompt) {
       return NextResponse.json(
         { error: "No content provided" },
         { status: 400 }
       );
     }
+   let aiResponse = "";
 
-    const response = await groq.chat.completions.create({
+switch (modelProvider || "groq") { 
+  case "groq":
+    const groqResponse = await groq.chat.completions.create({
       model: "llama-3.3-70b-versatile",
       messages: [{ role: "user", content: prompt }],
     });
+    aiResponse = groqResponse.choices[0].message.content ?? "";
+    break;
 
-    const aiResponse = response.choices[0].message.content ?? "";
+  case "gemini":
+    const model = gemini.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const result = await model.generateContent(prompt);
+    const response = result.response;
+    aiResponse = response.text();
+    break;
+
+  default:
+    return NextResponse.json(
+      { error: `Model provider '${modelProvider}' not supported.` },
+      { status: 400 }
+    );
+}
+
+
+    // const response = await groq.chat.completions.create({
+    //   model: "llama-3.3-70b-versatile",
+    //   messages: [{ role: "user", content: prompt }],
+    // });
+
+    // const aiResponse = response.choices[0].message.content ?? "";
 
     const user = await prismaClient.user.findUnique({
       where: { email: session.user.email },
@@ -130,9 +156,12 @@ export async function DELETE(req: NextRequest) {
     const id = req.nextUrl.searchParams.get("id");
     console.log("DELETE Chat ID:", id);
     if (!id) {
-      return NextResponse.json({ error: "Chat ID is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Chat ID is required" },
+        { status: 400 }
+      );
     }
-    
+
     const chat = await prismaClient.chat.findUnique({
       where: { id },
     });
@@ -143,12 +172,15 @@ export async function DELETE(req: NextRequest) {
     await prismaClient.chat.delete({
       where: { id },
     });
-    return NextResponse.json({ message: "Chat deleted successfully" }, { status: 200 });
+    return NextResponse.json(
+      { message: "Chat deleted successfully" },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("DELETE Chat Error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
     );
-  } 
+  }
 }

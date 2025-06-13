@@ -3,9 +3,18 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { SendHorizonal } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export default function NewChatPage() {
   const [input, setInput] = useState("");
+  const [model, setModel] = useState("grok"); 
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -14,6 +23,7 @@ export default function NewChatPage() {
     try {
       const res = await axios.post("/api/chat", {
         prompt: prompt,
+         modelProvider: model,
       });
       // No chatId here -because it creates a new chat and all the other prompt get its id otherwise if chatId is provided it will create new chat for every prompt
       const newChat = res.data;
@@ -69,6 +79,17 @@ export default function NewChatPage() {
       <div className="sticky bottom-0 left-0 w-full bg-white dark:bg-gray-800 shadow-lg p-4 border-t border-gray-200 dark:border-gray-700">
         <div className="w-full px-4 sm:px-6">
           <form onSubmit={handleSubmit} className="flex items-center gap-2">
+              <DropdownMenu>
+                 <DropdownMenuTrigger>{model.toUpperCase()}</DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                <DropdownMenuLabel>Select AI Model</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setModel("grok")}>Grok (Free)</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setModel("gemini")}>Gemini</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setModel("openai")}>OpenAI</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setModel("claude")}>Claude</DropdownMenuItem>
+              </DropdownMenuContent>
+              </DropdownMenu>
             <div className="relative flex-grow">
               <input
                 type="text"
