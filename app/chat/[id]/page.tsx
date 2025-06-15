@@ -7,21 +7,28 @@ import { SendHorizonal, Trash2, Loader2, Bot, User } from "lucide-react";
 import TextareaAutosize from "react-textarea-autosize";
 import {
   Card,
-  CardAction,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function ChatPage() {
   const { id } = useParams();
   const router = useRouter();
   const { chat, addChat } = useChatStore();
+
   const [loading, setLoading] = useState(true);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
+  const [model, setModel] = useState("groq"); // ✅ Model state
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -51,12 +58,7 @@ export default function ChatPage() {
         }
       } catch (error: any) {
         console.error("Error fetching chat:", error);
-        if (error.response?.status === 404) {
-          router.push("/chat/new");
-        } else {
-          alert("Failed to load chat. Please try again.");
-          router.push("/chat/new");
-        }
+        router.push("/chat/new");
       } finally {
         setLoading(false);
       }
@@ -73,9 +75,9 @@ export default function ChatPage() {
       const res = await axios.post("/api/chat", {
         prompt: message,
         chatId: chatId,
+        modelProvider: model, // ✅ Send selected model
       });
-      const updatedChat = res.data;
-      addChat(updatedChat);
+      addChat(res.data);
     } catch (error: any) {
       console.error("Error sending message:", error);
       alert("Failed to send message. Please try again.");
@@ -144,7 +146,6 @@ export default function ChatPage() {
                     </CardContent>
                   </Card>
                 </div>
-
                 <div className="flex justify-start">
                   <Card className="my-2 bg-gray-100 rounded-lg max-w-[70%]">
                     <CardHeader className="flex flex-row items-center gap-2 pb-2">
@@ -187,8 +188,23 @@ export default function ChatPage() {
         <div ref={messagesEndRef} />
       </div>
 
+      {/* ✅ Model Dropdown + Input + Submit */}
       <div className="p-4 border-t border-gray-200 bg-white">
         <form onSubmit={handleSubmit} className="flex items-center gap-3">
+          <DropdownMenu>
+            <DropdownMenuTrigger className="border border-gray-300 rounded px-3 py-2 text-sm bg-gray-800  text-white hover:bg-gray-900 transition-colors duration-200">
+              {model.toUpperCase()}
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Select AI Model</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => setModel("groq")}>Groq (Free)</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setModel("gemini")}>Gemini</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setModel("openai")}>OpenAI</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setModel("claude")}>Claude</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <TextareaAutosize
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -204,8 +220,9 @@ export default function ChatPage() {
                 handleSubmit(e);
               }
             }}
-            className="flex-1 resize-none p-3 border border-gray-300 rounded-lg  text-black focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm disabled:bg-gray-50 disabled:cursor-not-allowed"
+            className="flex-1 resize-none p-3 border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm disabled:bg-gray-50 disabled:cursor-not-allowed"
           />
+
           <button
             type="submit"
             disabled={!input.trim() || sending}
