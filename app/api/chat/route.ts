@@ -87,11 +87,25 @@ switch (modelProvider || "groq") {
     aiResponse = response.text();
     break;
 
-  default:
-    return NextResponse.json(
-      { error: `Model provider '${modelProvider}' not supported.` },
-      { status: 400 }
-    );
+   case "openai":
+          // TODO: Implement OpenAI integration
+          return NextResponse.json(
+            { error: "OpenAI integration not yet implemented" },
+            { status: 501 }
+          );
+
+        case "claude":
+          // TODO: Implement Claude integration
+          return NextResponse.json(
+            { error: "Claude integration not yet implemented" },
+            { status: 501 }
+          );
+
+        default:
+          return NextResponse.json(
+            { error: `Model provider '${modelProvider}' not supported.` },
+            { status: 400 }
+          );
 }
 
 
