@@ -14,7 +14,7 @@ import {
 
 export default function NewChatPage() {
   const [input, setInput] = useState("");
-  const [model, setModel] = useState("grok"); 
+  const [model, setModel] = useState("groq"); 
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -84,7 +84,7 @@ export default function NewChatPage() {
                   <DropdownMenuContent>
                 <DropdownMenuLabel>Select AI Model</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => setModel("grok")}>Grok (Free)</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setModel("groq")}>Groq (Free)</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setModel("gemini")}>Gemini</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setModel("openai")}>OpenAI</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setModel("claude")}>Claude</DropdownMenuItem>
