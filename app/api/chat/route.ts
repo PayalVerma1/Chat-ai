@@ -1,12 +1,15 @@
 import { NextResponse, NextRequest } from "next/server";
 import Groq from "groq-sdk";
-
+import OpenAI from "openai";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 import { prismaClient } from "@/lib/db";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 const groq = new Groq({
   apiKey: process.env.API_KEY!,
 });
@@ -88,14 +91,15 @@ switch (modelProvider || "groq") {
     break;
 
    case "openai":
-          // TODO: Implement OpenAI integration
-          return NextResponse.json(
-            { error: "OpenAI integration not yet implemented" },
-            { status: 501 }
-          );
+          const openaiResponse = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: prompt }],
+    });
+    aiResponse = openaiResponse.choices[0].message.content ?? "";
+    break;
+
 
         case "claude":
-          // TODO: Implement Claude integration
           return NextResponse.json(
             { error: "Claude integration not yet implemented" },
             { status: 501 }
