@@ -5,12 +5,8 @@ import { useChatStore } from "@/store/chatStore";
 import axios from "axios";
 import { SendHorizonal, Trash2, Loader2, Bot, User } from "lucide-react";
 import TextareaAutosize from "react-textarea-autosize";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import PaymentPage from "@/app/components/payments";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -108,9 +104,9 @@ export default function ChatPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-full w-full">
+      <div className="flex flex-col items-center justify-center h-screen w-full overflow-hidden">
         <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
-        <p className=" text-gray-600">Loading chat...</p>
+        <p className="text-gray-600">Loading chat...</p>
       </div>
     );
   }
@@ -118,9 +114,9 @@ export default function ChatPage() {
   const hasExchanges = chat && chat.exchanges && chat.exchanges.length > 0;
 
   return (
-    <div className="flex flex-col h-full w-full">
+    <div className="flex flex-col h-screen w-full overflow-hidden">
       <div className="flex items-center justify-between p-4 border-b border-gray-200">
-        <h1 className="text-xl font-semibold text-white">Chat with AI</h1>
+        <h1 className="text-xl font-semibold text-white">Chat-AI</h1>
         <button
           onClick={deleteChatConfirm}
           className="flex items-center gap-2 text-red-500 hover:text-red-600 transition-colors duration-200"
@@ -129,8 +125,8 @@ export default function ChatPage() {
           <span className="text-sm font-medium">Delete Chat</span>
         </button>
       </div>
-
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
+      {/* Chat Messages - Only this section scrolls */}
+      <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-4 custom-scrollbar">
         {hasExchanges ? (
           <div className="space-y-4">
             {chat.exchanges.map((exchange) => (
@@ -142,7 +138,7 @@ export default function ChatPage() {
                       <CardTitle className="text-sm font-medium">You</CardTitle>
                     </CardHeader>
                     <CardContent className="pt-0">
-                      <p className="text-sm">{exchange.prompt}</p>
+                      <p className="text-sm whitespace-pre-wrap break-words">{exchange.prompt}</p>
                     </CardContent>
                   </Card>
                 </div>
@@ -153,7 +149,7 @@ export default function ChatPage() {
                       <CardTitle className="text-sm font-medium">AI</CardTitle>
                     </CardHeader>
                     <CardContent className="pt-0">
-                      <p className="text-sm text-gray-800">
+                      <p className="text-sm text-gray-800 whitespace-pre-wrap break-words">
                         {exchange.response}
                       </p>
                     </CardContent>
@@ -188,21 +184,38 @@ export default function ChatPage() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* ✅ Model Dropdown + Input + Submit */}
-      <div className="p-4 border-t border-gray-200 bg-white">
+      {/* Fixed Input Section */}
+      <div className="flex-shrink-0 p-4 border-t border-gray-200 bg-white">
         <form onSubmit={handleSubmit} className="flex items-center gap-3">
           <DropdownMenu>
-            <DropdownMenuTrigger className="border border-gray-300 rounded px-3 py-2 text-sm bg-gray-800  text-white hover:bg-gray-900 transition-colors duration-200">
+            <DropdownMenuTrigger className="flex-shrink-0 border border-gray-300 rounded px-3 py-2 text-sm bg-gray-800 text-white hover:bg-gray-900 transition-colors duration-200">
               {model.toUpperCase()}
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Select AI Model</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => setModel("groq")}>Groq (Free)</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setModel("gemini")}>Gemini</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setModel("openai")}>OpenAI</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setModel("claude")}>Claude</DropdownMenuItem>
-            </DropdownMenuContent>
+           <DropdownMenuContent>
+                           <DropdownMenuLabel>Select AI Model</DropdownMenuLabel>
+                           <DropdownMenuSeparator />
+           
+                           <DropdownMenuItem onClick={() => setModel("groq")}>
+                             Groq (Free)
+                           </DropdownMenuItem>
+                           <DropdownMenuItem onClick={() => setModel("gemini")}>
+                             Gemini
+                           </DropdownMenuItem>
+                           <DropdownMenuItem onClick={() => setModel("openai")}>
+                             OpenAI
+                           </DropdownMenuItem>
+                           <DropdownMenuItem onClick={() => setModel("claude")}>
+                             Claude
+                           </DropdownMenuItem>
+                           <DropdownMenuSeparator />
+                           <DropdownMenuLabel className="text-xs text-gray-500 px-2">
+                             Upgrade to use premium models
+                           </DropdownMenuLabel>
+           
+                           <div className="px-3 py-2">
+                             <PaymentPage />
+                           </div>
+                         </DropdownMenuContent>
           </DropdownMenu>
 
           <TextareaAutosize
@@ -226,7 +239,7 @@ export default function ChatPage() {
           <button
             type="submit"
             disabled={!input.trim() || sending}
-            className="p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200 disabled:bg-blue-300 disabled:cursor-not-allowed"
+            className="flex-shrink-0 p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200 disabled:bg-blue-300 disabled:cursor-not-allowed"
           >
             {sending ? (
               <Loader2 className="h-5 w-5 animate-spin" />
