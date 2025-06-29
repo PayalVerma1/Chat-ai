@@ -7,6 +7,7 @@ import { SendHorizonal, Trash2, Loader2, Bot, User } from "lucide-react";
 import TextareaAutosize from "react-textarea-autosize";
 import PaymentPage from "@/app/components/payments";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import ModeToggle from "@/app/components/modeToggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -117,13 +118,9 @@ export default function ChatPage() {
     <div className="flex flex-col h-screen w-full overflow-hidden">
       <div className="flex items-center justify-between p-4 border-b border-gray-200">
         <h1 className="text-xl font-semibold text-white">Chat-AI</h1>
-        <button
-          onClick={deleteChatConfirm}
-          className="flex items-center gap-2 text-red-500 hover:text-red-600 transition-colors duration-200"
-        >
-          <Trash2 className="h-5 w-5" />
-          <span className="text-sm font-medium">Delete Chat</span>
-        </button>
+       
+        <ModeToggle />
+
       </div>
       {/* Chat Messages - Only this section scrolls */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-4 custom-scrollbar">
@@ -138,7 +135,9 @@ export default function ChatPage() {
                       <CardTitle className="text-sm font-medium">You</CardTitle>
                     </CardHeader>
                     <CardContent className="pt-0">
-                      <p className="text-sm whitespace-pre-wrap break-words">{exchange.prompt}</p>
+                      <p className="text-sm whitespace-pre-wrap break-words">
+                        {exchange.prompt}
+                      </p>
                     </CardContent>
                   </Card>
                 </div>
@@ -191,31 +190,31 @@ export default function ChatPage() {
             <DropdownMenuTrigger className="flex-shrink-0 border border-gray-300 rounded px-3 py-2 text-sm bg-gray-800 text-white hover:bg-gray-900 transition-colors duration-200">
               {model.toUpperCase()}
             </DropdownMenuTrigger>
-           <DropdownMenuContent>
-                           <DropdownMenuLabel>Select AI Model</DropdownMenuLabel>
-                           <DropdownMenuSeparator />
-           
-                           <DropdownMenuItem onClick={() => setModel("groq")}>
-                             Groq (Free)
-                           </DropdownMenuItem>
-                           <DropdownMenuItem onClick={() => setModel("gemini")}>
-                             Gemini
-                           </DropdownMenuItem>
-                           <DropdownMenuItem onClick={() => setModel("openai")}>
-                             OpenAI
-                           </DropdownMenuItem>
-                           <DropdownMenuItem onClick={() => setModel("claude")}>
-                             Claude
-                           </DropdownMenuItem>
-                           <DropdownMenuSeparator />
-                           <DropdownMenuLabel className="text-xs text-gray-500 px-2">
-                             Upgrade to use premium models
-                           </DropdownMenuLabel>
-           
-                           <div className="px-3 py-2">
-                             <PaymentPage />
-                           </div>
-                         </DropdownMenuContent>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Select AI Model</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem onClick={() => setModel("groq")}>
+                Groq (Free)
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setModel("gemini")}>
+                Gemini
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setModel("openai")}>
+                OpenAI
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setModel("claude")}>
+                Claude
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuLabel className="text-xs text-gray-500 px-2">
+                Upgrade to use premium models
+              </DropdownMenuLabel>
+
+              <div className="px-3 py-2">
+                <PaymentPage />
+              </div>
+            </DropdownMenuContent>
           </DropdownMenu>
 
           <TextareaAutosize

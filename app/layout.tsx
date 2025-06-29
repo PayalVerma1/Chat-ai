@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
+import { ThemeProvider } from "./components/theme-provider";
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/app-sidebar";
@@ -29,22 +30,24 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Providers>
-          <SidebarProvider>
-        
-              <div className="flex w-full h-screen">
-                {/* Sidebar always visible */}
-                <AppSidebar />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Providers>
+            <SidebarProvider>
+            
+                <div className="flex w-full h-screen">
+                  {/* Sidebar always visible */}
+                  <AppSidebar />
 
-                {/* Main content */}
-                <main className="flex-1 flex flex-col h-full w-full ">
-                  <SidebarTrigger />
-                  {children}
-                </main>
-              </div>
-          
-          </SidebarProvider>
-        </Providers>
+                  {/* Main content */}
+                  <main className="flex-1 flex flex-col h-full w-full ">
+                    <SidebarTrigger />
+                    {children}
+                  </main>
+                </div>
+            
+            </SidebarProvider>
+          </Providers>
+        </ThemeProvider>
       </body>
     </html>
   );

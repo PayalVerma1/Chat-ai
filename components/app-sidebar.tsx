@@ -7,17 +7,23 @@ import { useEffect } from "react";
 import axios from "axios";
 import AppBar from "@/app/components/AppBar";
 
-
 import {
   Sidebar,
   SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import { MoreHorizontal, MoreVertical, Trash2 } from "lucide-react";
 
 export default function AppSidebar() {
   const { chats, setChats } = useChatStore();
@@ -40,9 +46,26 @@ export default function AppSidebar() {
     router.push(`/chat/new`);
   };
 
+  const deleteChat = async (chatId: string) => {
+    if (!confirm("Are you sure you want to delete this chat?")) return;
+
+    try {
+      await axios.delete(`/api/chat?id=${chatId}`);
+      setChats(chats.filter((chat) => chat.id !== chatId));
+
+      if (pathname === `/chat/${chatId}`) {
+        router.push("/chat/new");
+      }
+    } catch (error) {
+      console.error("Error deleting chat:", error);
+      alert("Failed to delete chat.");
+    }
+  };
+
   return (
     <Sidebar className="h-screen flex flex-col">
       <SidebarContent className="h-full flex flex-col overflow-hidden">
+        {/* Header */}
         <div className="flex-shrink-0">
           <SidebarGroupLabel className="text-xl font-semibold px-4 pb-3 pt-4 text-gray-50">
             Chat-Ai
@@ -71,13 +94,15 @@ export default function AppSidebar() {
             </button>
           </div>
         </div>
-
         <div className="flex-1 overflow-y-auto px-3">
           <SidebarMenu className="space-y-1">
             {chats.length > 0 ? (
               chats.map((chat) => (
-                <SidebarMenuItem key={chat.id}>
-                  <SidebarMenuButton asChild>
+                <SidebarMenuItem
+                  key={chat.id}
+                  className="group/item flex items-center justify-between"
+                >
+                  <SidebarMenuButton asChild className="flex-1 min-w-0">
                     <Link
                       href={`/chat/${chat.id}`}
                       className={`block w-full truncate rounded-lg p-2 text-sm text-left transition-colors ${
@@ -90,6 +115,21 @@ export default function AppSidebar() {
                       {`Chat ${chat.id.slice(0, 8)}...`}
                     </Link>
                   </SidebarMenuButton>
+
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="ml-1 p-1 rounded hover:bg-gray-700 opacity-0 group-hover/item:opacity-100 transition-opacity">
+                      <MoreHorizontal className="w-4 h-4 text-gray-400 hover:text-white" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem
+                        className="text-red-500"
+                        onClick={() => deleteChat(chat.id)}
+                      >
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </SidebarMenuItem>
               ))
             ) : (
@@ -100,9 +140,9 @@ export default function AppSidebar() {
           </SidebarMenu>
         </div>
 
+        {/* Footer */}
         <div className="flex-shrink-0 border-t border-gray-800 p-3">
           <AppBar />
-         
         </div>
       </SidebarContent>
     </Sidebar>
