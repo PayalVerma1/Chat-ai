@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { SendHorizonal, Bot, User } from "lucide-react";
 import PaymentPage from "@/app/components/payments";
+import ModeToggle from "@/app/components/modeToggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -96,6 +97,10 @@ export default function NewChatPage() {
   };
 
   return (
+   <div className="relative flex-1">
+  <div className="absolute top-0 right-2 z-10 flex justify-end">
+    <ModeToggle />
+  </div>
     <div className="flex flex-col h-full w-full bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <div className="flex-1 flex items-center justify-center p-4">
         {loading ? (
@@ -197,5 +202,6 @@ export default function NewChatPage() {
         </div>
       </div>
     </div>
+  </div>
   );
 }

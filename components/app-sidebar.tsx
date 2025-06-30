@@ -140,7 +140,6 @@ export default function AppSidebar() {
           </SidebarMenu>
         </div>
 
-        {/* Footer */}
         <div className="flex-shrink-0 border-t border-gray-800 p-3">
           <AppBar />
         </div>

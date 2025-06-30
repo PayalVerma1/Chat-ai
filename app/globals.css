@@ -29,10 +29,7 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 } 
-body {
-  background-color: #1e1e2e;
-  color: white;
-}
+
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);

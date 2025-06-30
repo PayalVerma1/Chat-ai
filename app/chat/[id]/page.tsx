@@ -115,14 +115,13 @@ export default function ChatPage() {
   const hasExchanges = chat && chat.exchanges && chat.exchanges.length > 0;
 
   return (
-    <div className="flex flex-col h-screen w-full overflow-hidden">
+    <div className="flex flex-col h-screen w-full overflow-hidden ">
       <div className="flex items-center justify-between p-4 border-b border-gray-200">
         <h1 className="text-xl font-semibold text-white">Chat-AI</h1>
        
         <ModeToggle />
 
       </div>
-      {/* Chat Messages - Only this section scrolls */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-4 custom-scrollbar">
         {hasExchanges ? (
           <div className="space-y-4">
@@ -130,10 +129,6 @@ export default function ChatPage() {
               <div key={exchange.id} className="w-full">
                 <div className="flex justify-end">
                   <Card className="my-2 bg-blue-500 text-white rounded-lg max-w-[70%]">
-                    <CardHeader className="flex flex-row items-center gap-2 pb-2">
-                      <User className="h-4 w-4" />
-                      <CardTitle className="text-sm font-medium">You</CardTitle>
-                    </CardHeader>
                     <CardContent className="pt-0">
                       <p className="text-sm whitespace-pre-wrap break-words">
                         {exchange.prompt}
@@ -143,10 +138,6 @@ export default function ChatPage() {
                 </div>
                 <div className="flex justify-start">
                   <Card className="my-2 bg-gray-100 rounded-lg max-w-[70%]">
-                    <CardHeader className="flex flex-row items-center gap-2 pb-2">
-                      <Bot className="h-4 w-4 text-green-600" />
-                      <CardTitle className="text-sm font-medium">AI</CardTitle>
-                    </CardHeader>
                     <CardContent className="pt-0">
                       <p className="text-sm text-gray-800 whitespace-pre-wrap break-words">
                         {exchange.response}
