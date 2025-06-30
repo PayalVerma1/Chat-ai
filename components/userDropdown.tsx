@@ -1,5 +1,6 @@
 "use client";
 import { useSession, signOut } from "next-auth/react";
+import Image from "next/image";
 import {
   Crown,
   Palette,
@@ -52,10 +53,14 @@ export default function UserDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-       <div className="flex items-center gap-3 px-4 py-3">
-          <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white font-semibold uppercase">
-            {name?.charAt(0)}
-          </div>
+        <div className="flex items-center gap-3 px-4 py-3">
+          <Image
+            width={32}
+            height={32}
+            src={session.user?.image || ""}
+            alt="Profile"
+            className="w-8 h-8 rounded-full object-cover"
+          />
           <div className="flex flex-col leading-tight">
             <span className="text-sm font-medium truncate">{name}</span>
             <span className="text-xs text-gray-400">Free</span>
@@ -80,8 +85,6 @@ export default function UserDropdown() {
             <span className="text-sm font-medium">Upgrade plan</span>
           </div>
         </DropdownMenuItem>
-
-       
 
         <DropdownMenuItem
           className="flex items-center justify-between hover:bg-zinc-800 cursor-pointer py-3"
