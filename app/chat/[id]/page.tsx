@@ -176,7 +176,7 @@ export default function ChatPage() {
                 AI Model
               </label>
               <DropdownMenu>
-                <DropdownMenuTrigger className="px-5 py-3  dark:border-gray-600 rounded-2xl bg- dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-blue-300 dark:hover:border-blue-500 transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-sm min-w-[100px] group">
+                <DropdownMenuTrigger className="px-5 py-3 rounded-2xl bg- dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-blue-300 dark:hover:border-blue-500 transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-sm min-w-[100px] group">
                   <div className="flex items-center justify-between gap-2">
                     <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                       {model.toUpperCase()}

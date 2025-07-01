@@ -40,7 +40,7 @@ export default function RootLayout({
                 <AppSidebar />
 
                 <main className="flex-1 flex flex-col h-full w-full ">
-                  <div className="flex items-center justify-between bg-[#F8F3FC] p-2 border-b border-gray-200">
+                  <div className="flex items-center justify-between bg-[#F8F3FC] dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-2 border-b border-gray-200 dark:border-gray-700">
                     <SidebarTrigger />
                     <ModeToggle />
                   </div>
