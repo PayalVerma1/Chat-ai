@@ -6,7 +6,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import axios from "axios";
 import AppBar from "@/app/components/AppBar";
-
 import {
   Sidebar,
   SidebarContent,
@@ -65,16 +64,15 @@ export default function AppSidebar() {
   return (
     <Sidebar className="h-screen flex flex-col">
       <SidebarContent className="h-full flex flex-col overflow-hidden">
-        {/* Header */}
         <div className="flex-shrink-0">
-          <SidebarGroupLabel className="text-xl font-semibold px-4 pb-3 pt-4 text-gray-50">
+          <SidebarGroupLabel className="text-xl font-bold px-6 pb-6 pt-8 text-[#7C3AED] dark:text-gray-50">
             Chat-Ai
           </SidebarGroupLabel>
 
           <div className="px-3 pt-2 pb-4">
             <button
               onClick={handleNewChat}
-              className="group flex w-full items-center justify-center space-x-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-200 transition-colors hover:border-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+              className="group flex w-full items-center justify-center space-x-2 rounded-lg border border-gray-300 bg-[#7C3AED] px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-400 hover:bg-gray-50 focus:outline-none  dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-gray-500 dark:hover:bg-gray-700"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -82,7 +80,7 @@ export default function AppSidebar() {
                 viewBox="0 0 24 24"
                 strokeWidth={1.8}
                 stroke="currentColor"
-                className="h-5 w-5 text-gray-300 group-hover:text-gray-200"
+                className="h-5 w-5 text-white group-hover:text-gray-700 dark:text-gray-300 dark:group-hover:text-gray-200"
               >
                 <path
                   strokeLinecap="round"
@@ -107,8 +105,8 @@ export default function AppSidebar() {
                       href={`/chat/${chat.id}`}
                       className={`block w-full truncate rounded-lg p-2 text-sm text-left transition-colors ${
                         pathname === `/chat/${chat.id}`
-                          ? "bg-gray-700 font-medium text-gray-50"
-                          : "text-gray-300 hover:bg-gray-800 hover:text-gray-100"
+                          ? "bg-gray-200 font-medium text-gray-900 dark:bg-gray-700 dark:text-gray-50"
+                          : "text-gray-600 hover:bg-gray-100 hover:text-gray-800 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-100"
                       }`}
                       title={`Chat ${chat.id}`}
                     >
@@ -117,12 +115,12 @@ export default function AppSidebar() {
                   </SidebarMenuButton>
 
                   <DropdownMenu>
-                    <DropdownMenuTrigger className="ml-1 p-1 rounded hover:bg-gray-700 opacity-0 group-hover/item:opacity-100 transition-opacity">
-                      <MoreHorizontal className="w-4 h-4 text-gray-400 hover:text-white" />
+                    <DropdownMenuTrigger className="ml-1 p-1 rounded hover:bg-gray-200 opacity-0 group-hover/item:opacity-100 transition-opacity dark:hover:bg-gray-700">
+                      <MoreHorizontal className="w-4 h-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem
-                        className="text-red-500"
+                        className="text-red-600 dark:text-red-400"
                         onClick={() => deleteChat(chat.id)}
                       >
                         <Trash2 className="w-4 h-4 mr-2" />
@@ -133,14 +131,14 @@ export default function AppSidebar() {
                 </SidebarMenuItem>
               ))
             ) : (
-              <p className="px-2 py-4 text-center text-sm text-gray-500">
+              <p className="px-2 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
                 No chats yet. Start a new one!
               </p>
             )}
           </SidebarMenu>
         </div>
 
-        <div className="flex-shrink-0 border-t border-gray-800 p-3">
+        <div className="flex-shrink-0 border-t border-gray-200 dark:border-gray-700 p-1">
           <AppBar />
         </div>
       </SidebarContent>

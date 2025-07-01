@@ -6,6 +6,7 @@ import { ThemeProvider } from "./components/theme-provider";
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/app-sidebar";
+import ModeToggle from "./components/modeToggle";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,22 +30,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Providers>
             <SidebarProvider>
-            
-                <div className="flex w-full h-screen">
-                  {/* Sidebar always visible */}
-                  <AppSidebar />
+              <div className="flex w-full h-screen text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
+                <AppSidebar />
 
-                  {/* Main content */}
-                  <main className="flex-1 flex flex-col h-full w-full ">
+                <main className="flex-1 flex flex-col h-full w-full ">
+                  <div className="flex items-center justify-between bg-[#F8F3FC] p-2 border-b border-gray-200">
                     <SidebarTrigger />
-                    {children}
-                  </main>
-                </div>
-            
+                    <ModeToggle />
+                  </div>
+                  {children}
+                </main>
+              </div>
             </SidebarProvider>
           </Providers>
         </ThemeProvider>
