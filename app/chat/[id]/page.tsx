@@ -116,64 +116,98 @@ export default function ChatPage() {
 
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden bg-[#F8F3FC] dark:bg-gray-900 text-gray-900 dark:text-gray-100 ">
-      <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-4 custom-scrollbar">
-        {hasExchanges ? (
-          <div className="space-y-4">
-            {chat.exchanges.map((exchange) => (
-              <div key={exchange.id} className="w-full">
-                <div className="flex justify-end">
-                  <Card className="my-2 mr-10 sm:mr-2 bg-[#7C3AED] text-white rounded-lg max-w-[60%]">
-                    <CardContent className="pt-0">
-                      <p className="text-sm whitespace-pre-wrap break-words">
-                        {exchange.prompt}
-                      </p>
-                    </CardContent>
-                  </Card>
+      <div className="flex-1 overflow-y-auto">
+        <div className="w-full max-w-4xl mx-auto px-4 py-6">
+          {hasExchanges ? (
+            <div className="space-y-6">
+              {chat.exchanges.map((exchange) => (
+                <div key={exchange.id} className="space-y-4">
+                  {/* User Message */}
+                  <div className="flex justify-end">
+                    <div className="max-w-[80%] sm:max-w-[70%] lg:max-w-[60%]">
+                      <div className="bg-blue-600 text-white rounded-2xl rounded-br-md px-4 py-3 shadow-sm">
+                        <p className="text-sm sm:text-base whitespace-pre-wrap break-words leading-relaxed">
+                          {exchange.prompt}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-start">
+                    <div className="max-w-[80%] sm:max-w-[70%] lg:max-w-[60%]">
+                      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                            <Bot className="w-3 h-3 text-white" />
+                          </div>
+                        </div>
+                        <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words leading-relaxed">
+                          {exchange.response}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              ))}
+              {sending && (
                 <div className="flex justify-start">
-                  <Card className="my-2 ml-10 sm:ml-2 bg-gray-100 rounded-lg max-w-[60%]">
-                    <CardContent className="pt-0">
-                      <p className="text-sm text-gray-800 whitespace-pre-wrap break-words">
-                        {exchange.response}
-                      </p>
-                    </CardContent>
-                  </Card>
+                  <div className="max-w-[80%] sm:max-w-[70%] lg:max-w-[60%]">
+                    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                          <Bot className="w-3 h-3 text-white" />
+                        </div>
+                        <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
+                          AI Assistant
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin text-blue-600" />
+                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                          Thinking...
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full min-h-[60vh] text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                <Bot className="w-8 h-8 text-white" />
               </div>
-            ))}
-            {sending && (
-              <div className="flex justify-start">
-                <Card className="my-2 bg-gray-100 rounded-lg max-w-[70%]">
-                  <CardHeader className="flex flex-row items-center gap-2 pb-2">
-                    <Bot className="h-4 w-4 text-green-600" />
-                    <CardTitle className="text-sm font-medium">AI</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0 flex items-center gap-2">
-                    <Loader2 className="h-4 w-4 animate-spin text-gray-500" />
-                    <span className="text-sm text-gray-800">Thinking...</span>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center h-full text-gray-500">
-            <Bot className="h-12 w-12 text-gray-400 mb-4" />
-            <h2 className="text-xl font-semibold mb-2">No messages yet</h2>
-            <p className="text-sm text-center">
-              Start the conversation by typing your first message below!
-            </p>
-          </div>
-        )}
-        <div ref={messagesEndRef} />
+              <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                Start a conversation
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400 max-w-md">
+                Ask me anything! I'm here to help with questions, creative
+                writing, analysis, and more.
+              </p>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
       </div>
 
-     <div className="sticky bottom-0 left-0 w-full bg-gradient-to-t from-white/98 via-white/95 to-white/90 dark:from-gray-950/98 dark:via-gray-900/95 dark:to-gray-900/85 backdrop-blur-2xl border-t border-gray-200/60 dark:border-gray-700/80 shadow-2xl p-6">
-     <div className="w-full px-4 sm:px-6">
-       <form onSubmit={handleSubmit} className="flex items-end gap-4">
-         <div className="flex flex-col gap-2">
-           <DropdownMenu>
-             <DropdownMenuTrigger className="px-5 py-3 border-2 border-gray-200 dark:border-gray-600/70 rounded-2xl bg-white dark:bg-gray-800/90 text-gray-900 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700/80 hover:border-blue-400 dark:hover:border-blue-400/80 transition-all duration-300 shadow-lg hover:shadow-xl dark:shadow-gray-900/50 font-semibold text-sm min-w-[100px] group">
+      <div className="sticky bottom-0 left-0 w-full dark:from-gray-950/98 dark:via-gray-900/95 dark:to-gray-900/85 backdrop-blur-2xl dark:border-gray-700/80 shadow-2xl px-4 py-4">
+        <div className="max-w-4xl mx-auto w-full">
+          <form onSubmit={handleSubmit} className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 dark:from-blue-400/20 dark:to-purple-400/20 rounded-3xl blur-xl pointer-events-none" />
+            <div className="relative w-full border-2 border-gray-200 dark:border-gray-600/70 rounded-3xl bg-white/90 dark:bg-gray-800/90 shadow-xl focus-within:shadow-2xl">
+              <input
+                type="text"
+                placeholder={
+                  loading ? "✨ Creating your chat..." : "What's on your mind?"
+                }
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                disabled={loading}
+                className="w-full pl-6 pr-6 pt-4 pb-12 rounded-3xl bg-transparent text-gray-900 dark:text-gray-50 placeholder-gray-500 dark:placeholder-gray-400 text-base font-medium focus:outline-none"
+              />
+
+              <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between">
+               <DropdownMenu>
+             <DropdownMenuTrigger className="px-5 py-2 border-2 border-gray-200 dark:border-gray-600/70 rounded-2xl bg-white dark:bg-gray-800/90 text-gray-900 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700/80 hover:border-blue-400 dark:hover:border-blue-400/80 transition-all duration-300 shadow-lg hover:shadow-xl dark:shadow-gray-900/50 font-semibold text-sm min-w-[100px] group">
                <div className="flex items-center justify-between gap-2">
                  <span className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-300 bg-clip-text text-transparent">
                    {model.toUpperCase()}
@@ -243,59 +277,44 @@ export default function ChatPage() {
                </div>
              </DropdownMenuContent>
            </DropdownMenu>
-         </div>
-         
-         <div className="relative flex-grow">
-           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 dark:from-blue-400/30 dark:to-purple-400/30 rounded-3xl blur-xl"></div>
-           <div className="relative">
-             <input
-               type="text"
-               placeholder={
-                 loading ? "✨ Creating your chat..." : "What's on your mind?"
-               }
-               value={input}
-               onChange={(e) => setInput(e.target.value)}
-               className="w-full pl-6 pr-16 py-4 rounded-3xl border-2 border-gray-200 dark:border-gray-600/70 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-4 focus:ring-blue-500/30 dark:focus:ring-blue-400/50 focus:border-blue-500 dark:focus:border-blue-400 hover:border-blue-300 dark:hover:border-blue-400/80 transition-all duration-300 placeholder-gray-500 dark:placeholder-gray-300 disabled:bg-gray-50/95 dark:disabled:bg-gray-800/50 disabled:text-gray-400 dark:disabled:text-gray-400 shadow-xl hover:shadow-2xl dark:shadow-gray-900/50 text-base font-medium"
-               disabled={loading}
-             />
-             <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
-               {input.trim() && !loading && (
-                 <div className="text-xs text-gray-500 dark:text-gray-300 bg-gray-100 dark:bg-gray-700/80 px-2 py-1 rounded-full font-medium border border-gray-200 dark:border-gray-600/50">
-                   {input.length}
-                 </div>
-               )}
-               <button
-                 type="submit"
-                 className="p-3 rounded-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 dark:from-blue-500 dark:via-purple-500 dark:to-blue-600 text-white hover:from-blue-700 hover:via-purple-700 hover:to-blue-800 dark:hover:from-blue-400 dark:hover:via-purple-400 dark:hover:to-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/40 dark:focus:ring-blue-400/60 disabled:from-gray-400 disabled:via-gray-500 disabled:to-gray-400 dark:disabled:from-gray-600 dark:disabled:via-gray-700 dark:disabled:to-gray-600 disabled:cursor-not-allowed transition-all duration-300 shadow-xl hover:shadow-2xl dark:shadow-blue-900/50 transform hover:scale-110 active:scale-95 relative overflow-hidden group"
-                 disabled={loading || !input.trim()}
-                 aria-label={loading ? "Creating chat" : "Start chat"}
-               >
-                 <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                 <div className="relative">
-                   {loading ? (
-                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                   ) : (
-                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                     </svg>
-                   )}
-                 </div>
-               </button>
-             </div>
-           </div>
-         </div>
-       </form>
-    
-       {loading && (
-         <div className="absolute top-2 right-6 bg-gradient-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400 text-white px-4 py-2 rounded-full text-xs font-medium shadow-lg dark:shadow-blue-900/50 animate-pulse border border-blue-300 dark:border-blue-500/50">
-           <div className="flex items-center gap-2">
-             <div className="w-2 h-2 bg-white rounded-full animate-bounce"></div>
-             <span>Preparing your chat...</span>
-           </div>
-         </div>
-       )}
-     </div>
-    </div>
+                <button
+                  type="submit"
+                  disabled={loading || !input.trim()}
+                  aria-label={loading ? "Creating chat" : "Start chat"}
+                  className="p-2 rounded-full bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 dark:from-blue-500 dark:via-purple-500 dark:to-blue-600 text-white hover:scale-110 active:scale-95 transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loading || sending ? (
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                      />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </div>
+          </form>
+
+          {loading && (
+            <div className="absolute top-2 right-6 bg-gradient-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400 text-white px-4 py-2 rounded-full text-xs font-medium shadow-lg animate-pulse border border-blue-300 dark:border-blue-500/50">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-white rounded-full animate-bounce" />
+                <span>Preparing your chat...</span>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
