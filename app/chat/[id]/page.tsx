@@ -28,14 +28,18 @@ export default function ChatPage() {
   const [model, setModel] = useState("groq");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Scroll to bottom when new messages are added
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!loading && messagesEndRef.current) {
+    const scrollToBottom = () => {
+      if (messagesEndRef.current) {
         messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
       }
-    }, 100);
+    };
+
+    // Small delay to ensure DOM has updated
+    const timer = setTimeout(scrollToBottom, 100);
     return () => clearTimeout(timer);
-  }, [chat, sending, loading]);
+  }, [chat?.exchanges, sending]); // Watch for changes in exchanges
 
   useEffect(() => {
     if (!id) {
@@ -115,39 +119,54 @@ export default function ChatPage() {
   const hasExchanges = chat && chat.exchanges && chat.exchanges.length > 0;
 
   return (
-    <div className="flex flex-col h-screen w-full overflow-hidden bg-[#F8F3FC] dark:bg-gray-900 text-gray-900 dark:text-gray-100 ">
-      <div className="flex-1 overflow-y-auto">
-        <div className="w-full max-w-4xl mx-auto px-4 py-6">
+    <div className="flex flex-col h-screen w-full overflow-hidden bg-[#F8F3FC] dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      {/* Messages Container - Key fix: ensure proper flex direction */}
+      <div className="flex-1 overflow-y-auto flex flex-col">
+        <div className="w-full max-w-4xl mx-auto px-4 py-6 flex-1">
           {hasExchanges ? (
-            <div className="space-y-6">
-              {chat.exchanges.map((exchange) => (
-                <div key={exchange.id} className="space-y-4">
-                  {/* User Message */}
-                  <div className="flex justify-end">
-                    <div className="max-w-[80%] sm:max-w-[70%] lg:max-w-[60%]">
-                      <div className="bg-blue-600 text-white rounded-2xl rounded-br-md px-4 py-3 shadow-sm">
-                        <p className="text-sm sm:text-base whitespace-pre-wrap break-words leading-relaxed">
-                          {exchange.prompt}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-start">
-                    <div className="max-w-[80%] sm:max-w-[70%] lg:max-w-[60%]">
-                      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
-                        <div className="flex items-center gap-2 mb-2">
-                          <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                            <Bot className="w-3 h-3 text-white" />
-                          </div>
+            <div className="flex flex-col space-y-6">
+              {/* Ensure exchanges are sorted by creation time/order */}
+              {chat.exchanges
+                .sort((a, b) => {
+                  // If exchanges have timestamps, sort by them
+                  if (a.createdAt && b.createdAt) {
+                    return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+                  }
+                  // If no timestamps, sort by id (assuming sequential)
+                  return Number(a.id) - Number(b.id);
+                })
+                .map((exchange) => (
+                  <div key={exchange.id} className="flex flex-col space-y-4">
+                    {/* User Message */}
+                    <div className="flex justify-end">
+                      <div className="max-w-[80%] sm:max-w-[70%] lg:max-w-[60%]">
+                        <div className="bg-blue-600 text-white rounded-2xl rounded-br-md px-4 py-3 shadow-sm">
+                          <p className="text-sm sm:text-base whitespace-pre-wrap break-words leading-relaxed">
+                            {exchange.prompt}
+                          </p>
                         </div>
-                        <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words leading-relaxed">
-                          {exchange.response}
-                        </p>
+                      </div>
+                    </div>
+                    
+                    {/* AI Response */}
+                    <div className="flex justify-start">
+                      <div className="max-w-[80%] sm:max-w-[70%] lg:max-w-[60%]">
+                        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                              <Bot className="w-3 h-3 text-white" />
+                            </div>
+                          </div>
+                          <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words leading-relaxed">
+                            {exchange.response}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              
+              {/* Loading indicator for new message */}
               {sending && (
                 <div className="flex justify-start">
                   <div className="max-w-[80%] sm:max-w-[70%] lg:max-w-[60%]">
@@ -185,10 +204,13 @@ export default function ChatPage() {
               </p>
             </div>
           )}
+          
+          {/* Invisible div to scroll to */}
           <div ref={messagesEndRef} />
         </div>
       </div>
 
+      {/* Input Area - Fixed at bottom */}
       <div className="sticky bottom-0 left-0 w-full dark:from-gray-950/98 dark:via-gray-900/95 dark:to-gray-900/85 backdrop-blur-2xl dark:border-gray-700/80 shadow-2xl px-4 py-4">
         <div className="max-w-4xl mx-auto w-full">
           <form onSubmit={handleSubmit} className="relative">
@@ -206,77 +228,78 @@ export default function ChatPage() {
               />
 
               <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between">
-               <DropdownMenu>
-             <DropdownMenuTrigger className="px-5 py-2 border-2 border-gray-200 dark:border-gray-600/70 rounded-2xl bg-white dark:bg-gray-800/90 text-gray-900 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700/80 hover:border-blue-400 dark:hover:border-blue-400/80 transition-all duration-300 shadow-lg hover:shadow-xl dark:shadow-gray-900/50 font-semibold text-sm min-w-[100px] group">
-               <div className="flex items-center justify-between gap-2">
-                 <span className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-300 bg-clip-text text-transparent">
-                   {model.toUpperCase()}
-                 </span>
-                 <svg className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                 </svg>
-               </div>
-             </DropdownMenuTrigger>
-             <DropdownMenuContent className="w-64 bg-white/98 dark:bg-gray-800/95 backdrop-blur-2xl border-2 border-gray-200/80 dark:border-gray-600/70 rounded-2xl shadow-2xl dark:shadow-gray-900/80 p-2">
-               <DropdownMenuLabel className="font-bold text-gray-900 dark:text-gray-50 text-base px-3 py-2">
-                 🤖 Select AI Model
-               </DropdownMenuLabel>
-               <DropdownMenuSeparator className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600/80 to-transparent my-2" />
-               
-               <DropdownMenuItem 
-                 onClick={() => setModel("groq")}
-                 className="flex items-center justify-between py-3 px-3 cursor-pointer hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/40 dark:hover:to-purple-900/40 rounded-xl transition-all duration-200 group"
-               >
-                 <div className="flex items-center gap-3">
-                   <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 dark:from-emerald-400 dark:to-emerald-500 rounded-lg flex items-center justify-center shadow-md dark:shadow-emerald-900/50">
-                     <span className="text-white font-bold text-xs">G</span>
-                   </div>
-                   <span className="font-medium text-gray-800 dark:text-gray-100">Groq</span>
-                 </div>
-                 <span className="text-xs bg-gradient-to-r from-emerald-500 to-green-500 dark:from-emerald-400 dark:to-green-400 text-white px-3 py-1 rounded-full font-bold shadow-md">
-                   FREE
-                 </span>
-               </DropdownMenuItem>
-               
-               <DropdownMenuItem 
-                 onClick={() => setModel("gemini")}
-                 className="flex items-center gap-3 py-3 px-3 cursor-pointer hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/40 dark:hover:to-purple-900/40 rounded-xl transition-all duration-200"
-               >
-                 <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 dark:from-blue-400 dark:to-blue-500 rounded-lg flex items-center justify-center shadow-md dark:shadow-blue-900/50">
-                   <span className="text-white font-bold text-xs">G</span>
-                 </div>
-                 <span className="font-medium text-gray-800 dark:text-gray-100">Gemini</span>
-               </DropdownMenuItem>
-               
-               <DropdownMenuItem 
-                 onClick={() => setModel("openai")}
-                 className="flex items-center gap-3 py-3 px-3 cursor-pointer hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/40 dark:hover:to-purple-900/40 rounded-xl transition-all duration-200"
-               >
-                 <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 dark:from-purple-400 dark:to-pink-400 rounded-lg flex items-center justify-center shadow-md dark:shadow-purple-900/50">
-                   <span className="text-white font-bold text-xs">AI</span>
-                 </div>
-                 <span className="font-medium text-gray-800 dark:text-gray-100">OpenAI</span>
-               </DropdownMenuItem>
-               
-               <DropdownMenuItem 
-                 onClick={() => setModel("claude")}
-                 className="flex items-center gap-3 py-3 px-3 cursor-pointer hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/40 dark:hover:to-purple-900/40 rounded-xl transition-all duration-200"
-               >
-                 <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 dark:from-orange-400 dark:to-red-400 rounded-lg flex items-center justify-center shadow-md dark:shadow-red-900/50">
-                   <span className="text-white font-bold text-xs">C</span>
-                 </div>
-                 <span className="font-medium text-gray-800 dark:text-gray-100">Claude</span>
-               </DropdownMenuItem>
-               
-               <DropdownMenuSeparator className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600/80 to-transparent my-3" />
-               <div className="px-3 py-2 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-xl border border-purple-200 dark:border-purple-600/50">
-                 <DropdownMenuLabel className="text-xs text-gray-700 dark:text-gray-200 font-medium mb-2 flex items-center gap-1">
-                   ✨ Premium Models Available
-                 </DropdownMenuLabel>
-                 <PaymentPage />
-               </div>
-             </DropdownMenuContent>
-           </DropdownMenu>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="px-5 py-2 border-2 border-gray-200 dark:border-gray-600/70 rounded-2xl bg-white dark:bg-gray-800/90 text-gray-900 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700/80 hover:border-blue-400 dark:hover:border-blue-400/80 transition-all duration-300 shadow-lg hover:shadow-xl dark:shadow-gray-900/50 font-semibold text-sm min-w-[100px] group">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-300 bg-clip-text text-transparent">
+                        {model.toUpperCase()}
+                      </span>
+                      <svg className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-64 bg-white/98 dark:bg-gray-800/95 backdrop-blur-2xl border-2 border-gray-200/80 dark:border-gray-600/70 rounded-2xl shadow-2xl dark:shadow-gray-900/80 p-2">
+                    <DropdownMenuLabel className="font-bold text-gray-900 dark:text-gray-50 text-base px-3 py-2">
+                      🤖 Select AI Model
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600/80 to-transparent my-2" />
+                    
+                    <DropdownMenuItem 
+                      onClick={() => setModel("groq")}
+                      className="flex items-center justify-between py-3 px-3 cursor-pointer hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/40 dark:hover:to-purple-900/40 rounded-xl transition-all duration-200 group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 dark:from-emerald-400 dark:to-emerald-500 rounded-lg flex items-center justify-center shadow-md dark:shadow-emerald-900/50">
+                          <span className="text-white font-bold text-xs">G</span>
+                        </div>
+                        <span className="font-medium text-gray-800 dark:text-gray-100">Groq</span>
+                      </div>
+                      <span className="text-xs bg-gradient-to-r from-emerald-500 to-green-500 dark:from-emerald-400 dark:to-green-400 text-white px-3 py-1 rounded-full font-bold shadow-md">
+                        FREE
+                      </span>
+                    </DropdownMenuItem>
+                    
+                    <DropdownMenuItem 
+                      onClick={() => setModel("gemini")}
+                      className="flex items-center gap-3 py-3 px-3 cursor-pointer hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/40 dark:hover:to-purple-900/40 rounded-xl transition-all duration-200"
+                    >
+                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 dark:from-blue-400 dark:to-blue-500 rounded-lg flex items-center justify-center shadow-md dark:shadow-blue-900/50">
+                        <span className="text-white font-bold text-xs">G</span>
+                      </div>
+                      <span className="font-medium text-gray-800 dark:text-gray-100">Gemini</span>
+                    </DropdownMenuItem>
+                    
+                    <DropdownMenuItem 
+                      onClick={() => setModel("openai")}
+                      className="flex items-center gap-3 py-3 px-3 cursor-pointer hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/40 dark:hover:to-purple-900/40 rounded-xl transition-all duration-200"
+                    >
+                      <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 dark:from-purple-400 dark:to-pink-400 rounded-lg flex items-center justify-center shadow-md dark:shadow-purple-900/50">
+                        <span className="text-white font-bold text-xs">AI</span>
+                      </div>
+                      <span className="font-medium text-gray-800 dark:text-gray-100">OpenAI</span>
+                    </DropdownMenuItem>
+                    
+                    <DropdownMenuItem 
+                      onClick={() => setModel("claude")}
+                      className="flex items-center gap-3 py-3 px-3 cursor-pointer hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/40 dark:hover:to-purple-900/40 rounded-xl transition-all duration-200"
+                    >
+                      <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 dark:from-orange-400 dark:to-red-400 rounded-lg flex items-center justify-center shadow-md dark:shadow-red-900/50">
+                        <span className="text-white font-bold text-xs">C</span>
+                      </div>
+                      <span className="font-medium text-gray-800 dark:text-gray-100">Claude</span>
+                    </DropdownMenuItem>
+                    
+                    <DropdownMenuSeparator className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600/80 to-transparent my-3" />
+                    <div className="px-3 py-2 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-xl border border-purple-200 dark:border-purple-600/50">
+                      <DropdownMenuLabel className="text-xs text-gray-700 dark:text-gray-200 font-medium mb-2 flex items-center gap-1">
+                        ✨ Premium Models Available
+                      </DropdownMenuLabel>
+                      <PaymentPage />
+                    </div>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                
                 <button
                   type="submit"
                   disabled={loading || !input.trim()}
