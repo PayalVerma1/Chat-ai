@@ -69,10 +69,10 @@ export default function AppSidebar() {
             Chat-Ai
           </SidebarGroupLabel>
 
-          <div className="px-3 pt-2 pb-4">
+          <div className="px-3 pt-2 pb-3">
             <button
               onClick={handleNewChat}
-              className="group flex w-full items-center justify-center space-x-2 rounded-lg border border-gray-300 bg-[#7C3AED] px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-400 hover:bg-gray-50 focus:outline-none  dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-gray-500 dark:hover:bg-gray-700"
+              className="group flex w-full items-center justify-center space-x-2 rounded-lg border border-gray-300 bg-gradient-to-r from-gray-600  to-purple-600 dark:from-white dark:via-blue-200 dark:to-purple-200  px-4 py-2 text-sm font-medium text-white transition-colors hover:border-gray-400 hover:bg-gray-50 focus:outline-none  dark:border-gray-600 dark:bg-gray-800 dark:text-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-700"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +80,7 @@ export default function AppSidebar() {
                 viewBox="0 0 24 24"
                 strokeWidth={1.8}
                 stroke="currentColor"
-                className="h-5 w-5 text-white group-hover:text-gray-700 dark:text-gray-300 dark:group-hover:text-gray-200"
+                className="h-5 w-5 text-white group-hover:text-gray-700 dark:text-gray-600 text-bold  dark:group-hover:text-gray-900"
               >
                 <path
                   strokeLinecap="round"

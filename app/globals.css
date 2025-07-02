@@ -169,3 +169,40 @@ body {
     --sidebar-ring: oklch(0.439 0 0);
   }
 }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-thumb);
+  border-radius: 10px;
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scroll-thumb-hover);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --scroll-thumb: #d8d7d7;
+    --scroll-thumb-hover: #e7e3e3;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --scroll-thumb: #838181;
+    --scroll-thumb-hover: #777;
+  }
+}

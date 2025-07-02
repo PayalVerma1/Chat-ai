@@ -60,7 +60,7 @@ const PaymentPage = () => {
       <button
         onClick={handlePayment}
         disabled={isProcessing}
-        className={`px-6 py-2 text-white rounded ${
+        className={`px-6 py-2 text-white text-bold rounded ${
           isProcessing ? "bg-gray-500" : "bg-blue-600 hover:bg-blue-700"
         }`}
       >

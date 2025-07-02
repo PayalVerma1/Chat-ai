@@ -101,11 +101,7 @@ export default function NewChatPage() {
     <div className="relative flex-1">
       <div className="flex flex-col h-full w-full bg-[#F8F3FC] dark:bg-gray-900 text-gray-900 dark:text-gray-100">
         <div className="flex-1 flex items-center justify-center p-4">
-          {loading ? (
-            <div className="w-full h-full overflow-y-auto">
-              <ChatSkeleton />
-            </div>
-          ) : (
+          
             <div className="text-center w-full px-4 sm:px-6 md:px-12 lg:px-20 xl:px-40 2xl:px-60">
               <h1 className="relative text-5xl md:text-6xl lg:text-7xl font-black mb-3 bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-transparent leading-tight">
                 Chat-AI
@@ -136,7 +132,7 @@ export default function NewChatPage() {
                 ))}
               </div>
             </div>
-          )}
+          
         </div>
 
         <div className="sticky bottom-0 left-0 w-full dark:from-gray-950/98 dark:via-gray-900/95 dark:to-gray-900/85 backdrop-blur-2xl dark:border-gray-700/80 shadow-2xl px-4 py-4 ">
