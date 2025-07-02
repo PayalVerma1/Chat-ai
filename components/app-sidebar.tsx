@@ -62,8 +62,8 @@ export default function AppSidebar() {
   };
 
   return (
-    <Sidebar className="h-screen flex flex-col">
-      <SidebarContent className="h-full flex flex-col overflow-hidden">
+    <Sidebar className="h-screen flex flex-col ">
+      <SidebarContent className="h-full flex flex-col dark:bg-[#7c3aed0c] overflow-hidden">
         <div className="flex-shrink-0">
           <SidebarGroupLabel className="text-xl font-bold px-6 pb-6 pt-8  text-[#7C3AED] dark:text-gray-50">
             Chat-Ai
