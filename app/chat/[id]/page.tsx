@@ -125,14 +125,11 @@ export default function ChatPage() {
         <div className="w-full max-w-4xl mx-auto px-4 py-6 flex-1">
           {hasExchanges ? (
             <div className="flex flex-col space-y-6">
-              {/* Ensure exchanges are sorted by creation time/order */}
               {chat.exchanges
                 .sort((a, b) => {
-                  // If exchanges have timestamps, sort by them
                   if (a.createdAt && b.createdAt) {
                     return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
                   }
-                  // If no timestamps, sort by id (assuming sequential)
                   return Number(a.id) - Number(b.id);
                 })
                 .map((exchange) => (
