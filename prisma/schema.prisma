@@ -19,6 +19,7 @@ model User {
   email     String    @unique
   name      String?
   chats     Chat[]    // A user can have multiple chats
+  subscription  Subscription?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }

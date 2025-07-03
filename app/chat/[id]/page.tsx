@@ -8,6 +8,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import PaymentPage from "@/app/components/payments";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ModeToggle from "@/app/components/modeToggle";
+import { Check } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,12 +17,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
+import { Copy } from "lucide-react";
 export default function ChatPage() {
   const { id } = useParams();
   const router = useRouter();
   const { chat, addChat } = useChatStore();
-
+  const [copy, setCopy] = useState(false);
   const [loading, setLoading] = useState(true);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
@@ -86,6 +87,15 @@ export default function ChatPage() {
       setSending(false);
     }
   };
+  const createCopy = async (textToCopy: string) => {
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      setCopy(true);
+      setTimeout(() => setCopy(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -128,25 +138,38 @@ export default function ChatPage() {
               {chat.exchanges
                 .sort((a, b) => {
                   if (a.createdAt && b.createdAt) {
-                    return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+                    return (
+                      new Date(a.createdAt).getTime() -
+                      new Date(b.createdAt).getTime()
+                    );
                   }
                   return Number(a.id) - Number(b.id);
                 })
                 .map((exchange) => (
                   <div key={exchange.id} className="flex flex-col space-y-4">
-                    {/* User Message */}
-                    <div className="flex justify-end">
-                      <div className="max-w-[80%] sm:max-w-[70%] lg:max-w-[60%]">
-                        <div className="bg-blue-600 text-white rounded-2xl rounded-br-md px-4 py-3 shadow-sm">
+                    <div className="flex justify-end items-start gap-2">
+                      <div className="max-w-[80%] sm:max-w-[70%] lg:max-w-[60%] ">
+                        <div className="bg-blue-600 text-white rounded-2xl rounded-br-md px-4 py-3 shadow-sm relative">
                           <p className="text-sm sm:text-base whitespace-pre-wrap break-words leading-relaxed">
                             {exchange.prompt}
                           </p>
                         </div>
                       </div>
+                      <button
+                        onClick={() => createCopy(exchange.prompt)}
+                        className="p-2 rounded-s hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+                        title="Copy message"
+                      >
+                        {copy ? (
+                          <Check className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                        ) : (
+                          <Copy className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                        )}
+                      </button>
                     </div>
-                    
-                    {/* AI Response */}
-                    <div className="flex justify-start">
+
+                    <div className="flex flex-col justify-start items-start gap-2">
+                     
                       <div className="max-w-[80%] sm:max-w-[70%] lg:max-w-[60%]">
                         <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
                           <div className="flex items-center gap-2 mb-2">
@@ -159,10 +182,22 @@ export default function ChatPage() {
                           </p>
                         </div>
                       </div>
+                       <button
+                        onClick={() => createCopy(exchange.response)}
+                        className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition mt-2"
+                        title="Copy response"
+                      >
+                         {copy ? (
+                          <Check className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                        ) : (
+                          <Copy className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                        )}
+                      </button>
+
                     </div>
                   </div>
                 ))}
-              
+
               {/* Loading indicator for new message */}
               {sending && (
                 <div className="flex justify-start">
@@ -201,7 +236,7 @@ export default function ChatPage() {
               </p>
             </div>
           )}
-          
+
           {/* Invisible div to scroll to */}
           <div ref={messagesEndRef} />
         </div>
@@ -231,8 +266,18 @@ export default function ChatPage() {
                       <span className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-300 bg-clip-text text-transparent">
                         {model.toUpperCase()}
                       </span>
-                      <svg className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      <svg
+                        className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180 text-gray-600 dark:text-gray-300"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
                       </svg>
                     </div>
                   </DropdownMenuTrigger>
@@ -241,52 +286,62 @@ export default function ChatPage() {
                       🤖 Select AI Model
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600/80 to-transparent my-2" />
-                    
-                    <DropdownMenuItem 
+
+                    <DropdownMenuItem
                       onClick={() => setModel("groq")}
                       className="flex items-center justify-between py-3 px-3 cursor-pointer hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/40 dark:hover:to-purple-900/40 rounded-xl transition-all duration-200 group"
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 dark:from-emerald-400 dark:to-emerald-500 rounded-lg flex items-center justify-center shadow-md dark:shadow-emerald-900/50">
-                          <span className="text-white font-bold text-xs">G</span>
+                          <span className="text-white font-bold text-xs">
+                            G
+                          </span>
                         </div>
-                        <span className="font-medium text-gray-800 dark:text-gray-100">Groq</span>
+                        <span className="font-medium text-gray-800 dark:text-gray-100">
+                          Groq
+                        </span>
                       </div>
                       <span className="text-xs bg-gradient-to-r from-emerald-500 to-green-500 dark:from-emerald-400 dark:to-green-400 text-white px-3 py-1 rounded-full font-bold shadow-md">
                         FREE
                       </span>
                     </DropdownMenuItem>
-                    
-                    <DropdownMenuItem 
+
+                    <DropdownMenuItem
                       onClick={() => setModel("gemini")}
                       className="flex items-center gap-3 py-3 px-3 cursor-pointer hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/40 dark:hover:to-purple-900/40 rounded-xl transition-all duration-200"
                     >
                       <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 dark:from-blue-400 dark:to-blue-500 rounded-lg flex items-center justify-center shadow-md dark:shadow-blue-900/50">
                         <span className="text-white font-bold text-xs">G</span>
                       </div>
-                      <span className="font-medium text-gray-800 dark:text-gray-100">Gemini</span>
+                      <span className="font-medium text-gray-800 dark:text-gray-100">
+                        Gemini
+                      </span>
                     </DropdownMenuItem>
-                    
-                    <DropdownMenuItem 
+
+                    <DropdownMenuItem
                       onClick={() => setModel("openai")}
                       className="flex items-center gap-3 py-3 px-3 cursor-pointer hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/40 dark:hover:to-purple-900/40 rounded-xl transition-all duration-200"
                     >
                       <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 dark:from-purple-400 dark:to-pink-400 rounded-lg flex items-center justify-center shadow-md dark:shadow-purple-900/50">
                         <span className="text-white font-bold text-xs">AI</span>
                       </div>
-                      <span className="font-medium text-gray-800 dark:text-gray-100">OpenAI</span>
+                      <span className="font-medium text-gray-800 dark:text-gray-100">
+                        OpenAI
+                      </span>
                     </DropdownMenuItem>
-                    
-                    <DropdownMenuItem 
+
+                    <DropdownMenuItem
                       onClick={() => setModel("claude")}
                       className="flex items-center gap-3 py-3 px-3 cursor-pointer hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/40 dark:hover:to-purple-900/40 rounded-xl transition-all duration-200"
                     >
                       <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 dark:from-orange-400 dark:to-red-400 rounded-lg flex items-center justify-center shadow-md dark:shadow-red-900/50">
                         <span className="text-white font-bold text-xs">C</span>
                       </div>
-                      <span className="font-medium text-gray-800 dark:text-gray-100">Claude</span>
+                      <span className="font-medium text-gray-800 dark:text-gray-100">
+                        Claude
+                      </span>
                     </DropdownMenuItem>
-                    
+
                     <DropdownMenuSeparator className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600/80 to-transparent my-3" />
                     <div className="px-3 py-2 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-xl border border-purple-200 dark:border-purple-600/50">
                       <DropdownMenuLabel className="text-xs text-gray-700 dark:text-gray-200 font-medium mb-2 flex items-center gap-1">
@@ -296,7 +351,7 @@ export default function ChatPage() {
                     </div>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                
+
                 <button
                   type="submit"
                   disabled={loading || !input.trim()}

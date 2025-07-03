@@ -72,6 +72,7 @@ export default function NewChatPage() {
   const [input, setInput] = useState("");
   const [model, setModel] = useState("groq");
   const [loading, setLoading] = useState(false);
+
   const router = useRouter();
 
   const createNewChat = async (prompt: string) => {
@@ -90,6 +91,7 @@ export default function NewChatPage() {
       setLoading(false);
     }
   };
+  
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
