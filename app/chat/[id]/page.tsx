@@ -28,19 +28,15 @@ export default function ChatPage() {
   const [sending, setSending] = useState(false);
   const [model, setModel] = useState("groq");
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  // Scroll to bottom when new messages are added
   useEffect(() => {
     const scrollToBottom = () => {
       if (messagesEndRef.current) {
         messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
       }
     };
-
-    // Small delay to ensure DOM has updated
     const timer = setTimeout(scrollToBottom, 100);
     return () => clearTimeout(timer);
-  }, [chat?.exchanges, sending]); // Watch for changes in exchanges
+  }, [chat?.exchanges, sending]); 
 
   useEffect(() => {
     if (!id) {
@@ -168,7 +164,6 @@ export default function ChatPage() {
                     </div>
 
                     <div className="flex flex-col justify-start items-start gap-2">
-                     
                       <div className="max-w-[80%] sm:max-w-[70%] lg:max-w-[60%]">
                         <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
                           <div className="flex items-center gap-2 mb-2">
@@ -181,18 +176,17 @@ export default function ChatPage() {
                           </p>
                         </div>
                       </div>
-                       <button
+                      <button
                         onClick={() => createCopy(exchange.response)}
                         className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition mt-2"
                         title="Copy response"
                       >
-                         {copy ? (
+                        {copy ? (
                           <Check className="w-4 h-4 text-gray-600 dark:text-gray-300" />
                         ) : (
                           <Copy className="w-4 h-4 text-gray-600 dark:text-gray-300" />
                         )}
                       </button>
-
                     </div>
                   </div>
                 ))}
