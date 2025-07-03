@@ -64,7 +64,7 @@ const PaymentPage = () => {
           isProcessing ? "bg-gray-500" : "bg-blue-600 hover:bg-blue-700"
         }`}
       >
-        {isProcessing ? "Processing..." : "Pay Now"}
+        {isProcessing ? "Processing..." : "Upgrade to Pro"}
       </button>
     </div>
   );

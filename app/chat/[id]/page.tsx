@@ -130,7 +130,6 @@ export default function ChatPage() {
 
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden bg-[#F8F3FC] dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-      {/* Messages Container - Key fix: ensure proper flex direction */}
       <div className="flex-1 overflow-y-auto flex flex-col">
         <div className="w-full max-w-4xl mx-auto px-4 py-6 flex-1">
           {hasExchanges ? (
@@ -147,7 +146,7 @@ export default function ChatPage() {
                 })
                 .map((exchange) => (
                   <div key={exchange.id} className="flex flex-col space-y-4">
-                    <div className="flex justify-end items-start gap-2">
+                    <div className="flex flex-col group items-end gap-2">
                       <div className="max-w-[80%] sm:max-w-[70%] lg:max-w-[60%] ">
                         <div className="bg-blue-600 text-white rounded-2xl rounded-br-md px-4 py-3 shadow-sm relative">
                           <p className="text-sm sm:text-base whitespace-pre-wrap break-words leading-relaxed">
@@ -157,7 +156,7 @@ export default function ChatPage() {
                       </div>
                       <button
                         onClick={() => createCopy(exchange.prompt)}
-                        className="p-2 rounded-s hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+                        className="p-2 rounded-s opacity-0 group-hover:opacity-100 transition"
                         title="Copy message"
                       >
                         {copy ? (
