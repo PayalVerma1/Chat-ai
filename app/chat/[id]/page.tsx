@@ -56,6 +56,7 @@ export default function ChatPage() {
         }
       } catch (error: any) {
         console.error("Error fetching chat:", error);
+        
         router.push("/chat/new");
       } finally {
         setLoading(false);
@@ -79,6 +80,9 @@ export default function ChatPage() {
     } catch (error: any) {
       console.error("Error sending message:", error);
       alert("Failed to send message. Please try again.");
+      if (axios.isAxiosError(error) && error.response?.status === 403) {
+          alert(error.response.data.error || "This model is for paid users only.");
+        }
     } finally {
       setSending(false);
     }

@@ -88,6 +88,9 @@ export default function NewChatPage() {
       router.push(`/chat/${newChat.id}`);
     } catch (error) {
       console.error("Error creating new chat:", error);
+      if (axios.isAxiosError(error) && error.response?.status === 403) {
+  alert(error.response.data.error || "This model is for paid users only.");
+}
       setLoading(false);
     }
   };

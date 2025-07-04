@@ -8,35 +8,52 @@ generator client {
   provider = "prisma-client-js"
 }
 
-
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL") 
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String    @id @default(uuid())
-  email     String    @unique
-  name      String?
-  chats     Chat[]    // A user can have multiple chats
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id             String        @id @default(uuid())
+  email          String        @unique
+  name           String?
+  chats          Chat[] // A user can have multiple chats
+  subscription   Subscription?
+  subscriptionId String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
 }
 
 model Chat {
-  id        String     @id @default(uuid())
-  user      User       @relation(fields: [userId], references: [id])  // Connects to User
-  userId    String
-  exchanges Pair[]        // A chat has many exchanges (messages) 
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  id             String        @id @default(uuid())
+  user           User          @relation(fields: [userId], references: [id]) // Connects to User
+  userId         String
+  subscription   Subscription? @relation(fields: [subscriptionId], references: [id])
+  subscriptionId String?
+  exchanges      Pair[] // A chat has many exchanges (messages) 
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
 }
 
-model Pair{
-  id      String      @id @default(uuid())
-  chat     Chat        @relation(fields:[chatId],references:[id] , onDelete: Cascade)
-  chatId   String
+model Pair {
+  id        String   @id @default(uuid())
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId    String
   prompt    String
-  response   String
-   createdAt   DateTime @default(now())
+  response  String
+  createdAt DateTime @default(now())
+}
+
+model Subscription {
+  id           String  @id @default(uuid())
+  user         User    @relation(fields: [userId], references: [id])
+  userId       String  @unique
+  chats        Chat[]
+  plan         String
+  status       String
+  customerName String
+  paymentId    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
