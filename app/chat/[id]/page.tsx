@@ -36,7 +36,7 @@ export default function ChatPage() {
     };
     const timer = setTimeout(scrollToBottom, 100);
     return () => clearTimeout(timer);
-  }, [chat?.exchanges, sending]); 
+  }, [chat?.exchanges, sending]);
 
   useEffect(() => {
     if (!id) {
@@ -56,7 +56,7 @@ export default function ChatPage() {
         }
       } catch (error: any) {
         console.error("Error fetching chat:", error);
-        
+
         router.push("/chat/new");
       } finally {
         setLoading(false);
@@ -81,8 +81,10 @@ export default function ChatPage() {
       console.error("Error sending message:", error);
       alert("Failed to send message. Please try again.");
       if (axios.isAxiosError(error) && error.response?.status === 403) {
-          alert(error.response.data.error || "This model is for paid users only.");
-        }
+        alert(
+          error.response.data.error || "This model is for paid users only."
+        );
+      }
     } finally {
       setSending(false);
     }
@@ -194,8 +196,6 @@ export default function ChatPage() {
                     </div>
                   </div>
                 ))}
-
-              {/* Loading indicator for new message */}
               {sending && (
                 <div className="flex justify-start">
                   <div className="max-w-[80%] sm:max-w-[70%] lg:max-w-[60%]">
@@ -234,12 +234,9 @@ export default function ChatPage() {
             </div>
           )}
 
-          {/* Invisible div to scroll to */}
           <div ref={messagesEndRef} />
         </div>
       </div>
-
-      {/* Input Area - Fixed at bottom */}
       <div className="sticky bottom-0 left-0 w-full dark:from-gray-950/98 dark:via-gray-900/95 dark:to-gray-900/85 backdrop-blur-2xl dark:border-gray-700/80 shadow-2xl px-4 py-4">
         <div className="max-w-4xl mx-auto w-full">
           <form onSubmit={handleSubmit} className="relative">
@@ -302,16 +299,22 @@ export default function ChatPage() {
                         FREE
                       </span>
                     </DropdownMenuItem>
-
                     <DropdownMenuItem
                       onClick={() => setModel("gemini")}
-                      className="flex items-center gap-3 py-3 px-3 cursor-pointer hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/40 dark:hover:to-purple-900/40 rounded-xl transition-all duration-200"
+                      className="flex items-center justify-between py-3 px-3 cursor-pointer hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/40 dark:hover:to-purple-900/40 rounded-xl transition-all duration-200 group"
                     >
-                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 dark:from-blue-400 dark:to-blue-500 rounded-lg flex items-center justify-center shadow-md dark:shadow-blue-900/50">
-                        <span className="text-white font-bold text-xs">G</span>
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 dark:from-blue-400 dark:to-blue-500 rounded-lg flex items-center justify-center shadow-md dark:shadow-emerald-900/50">
+                          <span className="text-white font-bold text-xs">
+                            G
+                          </span>
+                        </div>
+                        <span className="font-medium text-gray-800 dark:text-gray-100">
+                          Gemini
+                        </span>
                       </div>
-                      <span className="font-medium text-gray-800 dark:text-gray-100">
-                        Gemini
+                      <span className="text-xs bg-gradient-to-r from-emerald-500 to-green-500 dark:from-emerald-400 dark:to-green-400 text-white px-3 py-1 rounded-full font-bold shadow-md">
+                        FREE
                       </span>
                     </DropdownMenuItem>
 
