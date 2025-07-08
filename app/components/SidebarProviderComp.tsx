@@ -3,6 +3,7 @@ import AppSidebar from "@/components/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import ModeToggle from "./modeToggle";
 import { use } from "react";
+import SignupPage from "./Signup";
 import { useSession } from "next-auth/react";
 import SignIn from "./client-components/Signin";
 
@@ -27,11 +28,12 @@ const SidebarProviderComp = ({ children }: { children: React.ReactNode }) => {
       </div>
     </SidebarProvider>
         ) : (
-            <div className="flex items-center justify-center h-screen bg-[#F8F3FC] dark:bg-gray-900">
-                <p className="text-gray-600 dark:text-gray-400">Please sign in to access the chat.</p>
-                  <SignIn />
-                  
-            </div>
+            // <div className="flex items-center justify-center h-screen bg-[#F8F3FC] dark:bg-gray-900">
+            //     <p className="text-gray-600 dark:text-gray-400">Please sign in to access the chat.</p>
+            //       <SignIn />
+
+            // </div>
+            <SignupPage />
         )
      }
     </>
