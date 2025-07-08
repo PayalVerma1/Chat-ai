@@ -2,7 +2,6 @@ import { NextResponse, NextRequest } from "next/server";
 import Groq from "groq-sdk";
 import OpenAI from "openai";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-
 import { prismaClient } from "@/lib/db";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
@@ -105,20 +104,20 @@ export async function POST(req: NextRequest) {
 
     switch (modelProvider || "groq") {
       case "groq":
-         try {
-    const groqResponse = await groq.chat.completions.create({
-      model: "llama3-70b-8192", 
-      messages: [{ role: "user", content: prompt }],
-    });
-    aiResponse = groqResponse.choices[0].message.content ?? "";
-  } catch (error) {
-    console.error("Groq Error:", error);
-    return NextResponse.json(
-      { error: "Groq API call failed", details: String(error) },
-      { status: 500 }
-    );
-  }
-  break;
+        try {
+          const groqResponse = await groq.chat.completions.create({
+            model: "llama3-70b-8192",
+            messages: [{ role: "user", content: prompt }],
+          });
+          aiResponse = groqResponse.choices[0].message.content ?? "";
+        } catch (error) {
+          console.error("Groq Error:", error);
+          return NextResponse.json(
+            { error: "Groq API call failed", details: String(error) },
+            { status: 500 }
+          );
+        }
+        break;
       case "gemini":
         const model = gemini.getGenerativeModel({ model: "gemini-1.5-flash" });
         const result = await model.generateContent(prompt);
