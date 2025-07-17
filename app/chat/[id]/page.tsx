@@ -3,11 +3,9 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { useChatStore } from "@/store/chatStore";
 import axios from "axios";
-import { SendHorizonal, Trash2, Loader2, Bot, User } from "lucide-react";
-import TextareaAutosize from "react-textarea-autosize";
+import { Loader2, Bot } from "lucide-react";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import PaymentPage from "@/app/components/payments";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import ModeToggle from "@/app/components/modeToggle";
 import { Check } from "lucide-react";
 import {
   DropdownMenu,
@@ -105,25 +103,14 @@ export default function ChatPage() {
     sendMessage(input);
   };
 
-  const deleteChatConfirm = async () => {
-    if (!id) return;
-    if (!confirm("Are you sure you want to delete this chat?")) return;
-
-    try {
-      const chatId = Array.isArray(id) ? id[0] : id;
-      await axios.delete(`/api/chat?id=${chatId}`);
-      router.push("/chat/new");
-    } catch (error: any) {
-      console.error("Error deleting chat:", error);
-      alert("Failed to delete chat. Please try again.");
-    }
-  };
-
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-screen w-full overflow-hidden">
-        <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
-        <p className="text-gray-600">Loading chat...</p>
+        <DotLottieReact
+          src="https://lottie.host/embed/6df64044-5c5b-442b-b916-26392b4a7972/4QrMlLP3gw.lottie"
+          loop
+          autoplay
+        />
       </div>
     );
   }

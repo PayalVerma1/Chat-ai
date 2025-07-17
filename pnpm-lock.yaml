@@ -14,6 +14,9 @@ importers:
       '@google/generative-ai':
         specifier: ^0.24.1
         version: 0.24.1
+      '@lottiefiles/dotlottie-react':
+        specifier: ^0.14.2
+        version: 0.14.2(react@19.1.0)
       '@neondatabase/serverless':
         specifier: ^1.0.1
         version: 1.0.1
@@ -382,6 +385,14 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@lottiefiles/dotlottie-react@0.14.2':
+    resolution: {integrity: sha512-RR4r0HrKQbOAw6iS6C3mRARS2iu+yI+G1vICoUsRMHzlUUk1/26l3WyAjhcG+KoaGoKmORx8FgHjTNr4Sr/2Ug==}
+    peerDependencies:
+      react: ^17 || ^18 || ^19
+
+  '@lottiefiles/dotlottie-web@0.47.0':
+    resolution: {integrity: sha512-YN6wSB4iYZBYEAFKEs/taufrPH3rfNlUA632Ib61WoR58TALAJ1ZX8yDIGUBT28byMJhZR4+xdpRX4v7X8OeBQ==}
 
   '@napi-rs/wasm-runtime@0.2.10':
     resolution: {integrity: sha512-bCsCyeZEwVErsGmyPNSzwfwFn4OdxBj0mmv6hOFucB/k81Ojdu68RbZdxYsRQUPc9l6SU5F/cG+bXgWs3oUgsQ==}
@@ -3014,6 +3025,13 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@lottiefiles/dotlottie-react@0.14.2(react@19.1.0)':
+    dependencies:
+      '@lottiefiles/dotlottie-web': 0.47.0
+      react: 19.1.0
+
+  '@lottiefiles/dotlottie-web@0.47.0': {}
 
   '@napi-rs/wasm-runtime@0.2.10':
     dependencies:

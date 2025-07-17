@@ -9,7 +9,7 @@ declare global {
 }
 
 const PaymentPage = () => {
-  const Amount = 100; 
+  const Amount = 50; 
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handlePayment = async () => {
