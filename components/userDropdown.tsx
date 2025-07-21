@@ -1,5 +1,6 @@
 "use client";
 import { useSession, signOut } from "next-auth/react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   Crown,
@@ -20,6 +21,19 @@ import {
 
 export default function UserDropdown() {
   const { data: session } = useSession();
+  const [subscriptionStatus, setSubscriptionStatus] = useState<
+    "active" | "inactive" | ""
+  >("");
+  useEffect(() => {
+    if (session?.user?.email) {
+      fetch(`/api/subscriptionStatus?email=${session.user.email}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status === "active") setSubscriptionStatus("active");
+          console.log(data.status);
+        });
+    }
+  }, [session]);
 
   if (!session?.user) return null;
 
@@ -63,7 +77,9 @@ export default function UserDropdown() {
           />
           <div className="flex flex-col leading-tight">
             <span className="text-sm font-medium truncate">{name}</span>
-            <span className="text-xs text-gray-400">Free</span>
+            <span className="text-xs text-gray-400">
+              {subscriptionStatus === "active" ? "Premium" : "Free"}
+            </span>
           </div>
         </div>
       </DropdownMenuTrigger>

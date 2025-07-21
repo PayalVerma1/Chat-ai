@@ -84,11 +84,10 @@ export async function POST(req: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
-    const isPaidUser =
-      user.subscription &&
-      user.subscription.status === "active" &&
-      user.subscription.plan !== "free";
-
+   const isPaidUser =
+  user.subscription &&
+  user.subscription.status === "captured" &&
+  user.subscription.plan === "Pro";
     if (
       (modelProvider === "openai" || modelProvider === "claude") &&
       !isPaidUser
