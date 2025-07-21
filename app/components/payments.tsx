@@ -10,7 +10,7 @@ declare global {
 
 const PaymentPage = () => {
   const { data: session } = useSession();
-  const Amount = 2
+  const Amount = 1100;
   const [isProcessing, setIsProcessing] = useState(false);
   const [subscriptionStatus, setSubscriptionStatus] = useState<
     "active" | "inactive" | ""
