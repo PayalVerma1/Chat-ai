@@ -64,7 +64,7 @@ export default function AppSidebar() {
     <Sidebar className="h-screen flex flex-col ">
       <SidebarContent className="h-full flex flex-col dark:bg-[#1E2939] overflow-hidden">
         <div className="flex-shrink-0">
-          <SidebarGroupLabel className="text-2xl font-bold px-6 pb-4 pt-8 bg-gradient-to-r from-gray-600 to-purple-600 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-transparent">
+          <SidebarGroupLabel className="text-2xl font-black px-6 pb-4 pt-8  bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-transparent">
             Chat-AI
           </SidebarGroupLabel>
 
