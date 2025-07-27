@@ -105,12 +105,12 @@ export default function AppSidebar() {
                       href={`/chat/${chat.id}`}
                       className={`block w-full truncate rounded-lg p-2 text-sm text-left transition-colors ${
                         pathname === `/chat/${chat.id}`
-  ? "font-medium border border-[#CBD5D1] dark:border-[#9CEE69]/30 bg-[#E9F0E8] text-[#1E1E1E] dark:bg-[#7CB342]/20 dark:text-[#9CEE69]"
-  : "text-[#1E1E1E] hover:bg-[#E9F0E8] hover:text-[#1E1E1E] dark:text-[#CCCCCC] dark:hover:bg-[#7CB342]/20 dark:hover:text-[#9CEE69]"
-}`}
-                    title={chat.title ?? `Chat ${chat.id}`}
+                          ? "font-medium border border-[#CBD5D1] dark:border-[#9CEE69]/30 bg-[#E9F0E8] text-[#1E1E1E] dark:bg-[#7CB342]/20 dark:text-[#9CEE69]"
+                          : "text-[#1E1E1E] hover:bg-[#E9F0E8] hover:text-[#1E1E1E] dark:text-[#CCCCCC] dark:hover:bg-[#7CB342]/20 dark:hover:text-[#9CEE69]"
+                      }`}
+                      title={chat.title ?? `Chat ${chat.id}`}
                     >
-                     {chat.title ?? `Chat ${chat.id.slice(0, 8)}...`}
+                      {chat.title ?? `Chat ${chat.id.slice(0, 8)}`}
                     </Link>
                   </SidebarMenuButton>
 

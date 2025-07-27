@@ -84,10 +84,10 @@ export async function POST(req: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
-   const isPaidUser =
-  user.subscription &&
-  user.subscription.status === "captured" &&
-  user.subscription.plan === "Pro";
+    const isPaidUser =
+      user.subscription &&
+      user.subscription.status === "captured" &&
+      user.subscription.plan === "Pro";
     if (
       (modelProvider === "openai" || modelProvider === "claude") &&
       !isPaidUser
@@ -109,7 +109,6 @@ export async function POST(req: NextRequest) {
             messages: [{ role: "user", content: prompt }],
           });
           aiResponse = groqResponse.choices[0].message.content ?? "";
-          
         } catch (error) {
           console.error("Groq Error:", error);
           return NextResponse.json(
@@ -145,18 +144,23 @@ export async function POST(req: NextRequest) {
           { status: 400 }
         );
     }
-    let title = prompt.slice(0, 30).trim() + "..."; 
-try {
-  const titleGen = await groq.chat.completions.create({
-  model: "mixtral-8x7b-32768", 
-  messages: [{ role: "user", content: `Summarize this into a short title:\n${prompt}` }],
-  max_tokens: 20,
-});
+    let title = prompt.slice(0, 30).trim() ;
+    try {
+      const titleGen = await groq.chat.completions.create({
+        model: "mixtral-8x7b-32768",
+        messages: [
+          {
+            role: "user",
+            content: `Summarize this into a short title:\n${prompt}`,
+          },
+        ],
+        max_tokens: 20,
+      });
 
-  title = titleGen.choices[0]?.message?.content?.trim() || title;
-} catch (err) {
-  console.error("Title generation failed, using fallback:", err);
-}
+      title = titleGen.choices[0]?.message?.content?.trim() || title;
+    } catch (err) {
+      console.error("Title generation failed, using fallback:", err);
+    }
 
     let chat;
     if (chatId) {
@@ -169,10 +173,7 @@ try {
       }
     } else {
       chat = await prismaClient.chat.create({
-        data: { userId: user.id ,
-           title,
-
-        },
+        data: { userId: user.id, title },
       });
     }
     await prismaClient.pair.create({
