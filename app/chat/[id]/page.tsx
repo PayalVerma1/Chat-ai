@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Copy } from "lucide-react";
+
 export default function ChatPage() {
   const { id } = useParams();
   const router = useRouter();
@@ -26,6 +27,7 @@ export default function ChatPage() {
   const [sending, setSending] = useState(false);
   const [model, setModel] = useState("groq");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  
   useEffect(() => {
     const scrollToBottom = () => {
       if (messagesEndRef.current) {
@@ -41,7 +43,6 @@ export default function ChatPage() {
       router.push("/chat/new");
       return;
     }
-
     const fetchChat = async () => {
       setLoading(true);
       try {
@@ -54,13 +55,11 @@ export default function ChatPage() {
         }
       } catch (error: any) {
         console.error("Error fetching chat:", error);
-
         router.push("/chat/new");
       } finally {
         setLoading(false);
       }
     };
-
     fetchChat();
   }, [id, addChat, router]);
 
@@ -87,6 +86,7 @@ export default function ChatPage() {
       setSending(false);
     }
   };
+  
   const createCopy = async (textToCopy: string) => {
     try {
       await navigator.clipboard.writeText(textToCopy);
@@ -103,6 +103,7 @@ export default function ChatPage() {
     sendMessage(input);
   };
 
+  // --- START RENDER ---
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-screen w-full overflow-hidden">
@@ -118,7 +119,8 @@ export default function ChatPage() {
   const hasExchanges = chat && chat.exchanges && chat.exchanges.length > 0;
 
   return (
-    <div className="flex flex-col h-screen w-full overflow-hidden bg-[#F8F3FC] dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div className="flex flex-col h-screen w-full overflow-hidden bg-[#F5F7F6] text-[#2E2E2E] dark:bg-[#252722] dark:text-white">
+    
       <div className="flex-1 overflow-y-auto flex flex-col">
         <div className="w-full max-w-4xl mx-auto px-4 py-6 flex-1">
           {hasExchanges ? (
@@ -137,7 +139,13 @@ export default function ChatPage() {
                   <div key={exchange.id} className="flex flex-col space-y-4">
                     <div className="flex flex-col group items-end gap-2">
                       <div className="max-w-[80%] sm:max-w-[70%] lg:max-w-[60%] ">
-                        <div className="bg-blue-600 text-white rounded-2xl rounded-br-md px-4 py-3 shadow-sm relative">
+                        <div
+                          className="rounded-2xl rounded-br-md px-4 py-3 shadow-sm relative"
+                          style={{
+                            backgroundColor: "#7CB342", 
+                            color: "#1E1E1E",
+                          }}
+                        >
                           <p className="text-sm sm:text-base whitespace-pre-wrap break-words leading-relaxed">
                             {exchange.prompt}
                           </p>
@@ -149,35 +157,35 @@ export default function ChatPage() {
                         title="Copy message"
                       >
                         {copy ? (
-                          <Check className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                          <Check className="w-4 h-4 text-[#1E1E1E] dark:text-white" />
                         ) : (
-                          <Copy className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                          <Copy className="w-4 h-4 text-[#1E1E1E] dark:text-white" />
                         )}
                       </button>
                     </div>
 
                     <div className="flex flex-col justify-start items-start gap-2">
                       <div className="max-w-[80%] sm:max-w-[70%] lg:max-w-[60%]">
-                        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
+                        <div className="bg-white dark:bg-[#1E1E1E] border border-gray-200 dark:border-[#7CB342]/30 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
                           <div className="flex items-center gap-2 mb-2">
-                            <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                              <Bot className="w-3 h-3 text-white" />
+                            <div className="w-6 h-6 bg-[#1E1E1E] dark:bg-[#7CB342] rounded-full flex items-center justify-center">
+                              <Bot className="w-3 h-3 text-white dark:text-[#1E1E1E]" />
                             </div>
                           </div>
-                          <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words leading-relaxed">
+                          <p className="text-sm sm:text-base text-[#1E1E1E] dark:text-white whitespace-pre-wrap break-words leading-relaxed">
                             {exchange.response}
                           </p>
                         </div>
                       </div>
                       <button
                         onClick={() => createCopy(exchange.response)}
-                        className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition mt-2"
+                        className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#7CB342]/20 transition mt-2"
                         title="Copy response"
                       >
                         {copy ? (
-                          <Check className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                          <Check className="w-4 h-4 text-[#1E1E1E] dark:text-white" />
                         ) : (
-                          <Copy className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                          <Copy className="w-4 h-4 text-[#1E1E1E] dark:text-white" />
                         )}
                       </button>
                     </div>
@@ -186,18 +194,18 @@ export default function ChatPage() {
               {sending && (
                 <div className="flex justify-start">
                   <div className="max-w-[80%] sm:max-w-[70%] lg:max-w-[60%]">
-                    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
+                    <div className="bg-white dark:bg-[#1E1E1E] border border-gray-200 dark:border-[#7CB342]/30 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
                       <div className="flex items-center gap-2 mb-2">
-                        <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                          <Bot className="w-3 h-3 text-white" />
+                        <div className="w-6 h-6 bg-[#1E1E1E] dark:bg-[#7CB342] rounded-full flex items-center justify-center">
+                          <Bot className="w-3 h-3 text-white dark:text-[#1E1E1E]" />
                         </div>
                         <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
                           AI Assistant
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Loader2 className="h-4 w-4 animate-spin text-blue-600" />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                        <Loader2 className="h-4 w-4 animate-spin text-[#7CB342]" />
+                        <span className="text-sm text-[#1E1E1E] dark:text-white">
                           Thinking...
                         </span>
                       </div>
@@ -208,10 +216,10 @@ export default function ChatPage() {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center h-full min-h-[60vh] text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-                <Bot className="w-8 h-8 text-white" />
+              <div className="w-16 h-16 bg-[#1E1E1E] dark:bg-[#7CB342] rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                <Bot className="w-8 h-8 text-white dark:text-[#1E1E1E]" />
               </div>
-              <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
+              <h2 className="text-xl sm:text-2xl font-semibold text-[#1E1E1E] dark:text-white mb-2">
                 Start a conversation
               </h2>
               <p className="text-gray-600 dark:text-gray-400 max-w-md">
@@ -224,11 +232,11 @@ export default function ChatPage() {
           <div ref={messagesEndRef} />
         </div>
       </div>
-      <div className="sticky bottom-0 left-0 w-full dark:from-gray-950/98 dark:via-gray-900/95 dark:to-gray-900/85 backdrop-blur-2xl dark:border-gray-700/80 shadow-2xl px-4 py-4">
+      <div className="sticky bottom-0 left-0 w-full backdrop-blur-2xl border-t border-gray-200 dark:border-[#7CB342]/20 shadow-2xl px-4 py-4 bg-white/90 dark:bg-[#252722]/90">
         <div className="max-w-4xl mx-auto w-full">
           <form onSubmit={handleSubmit} className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 dark:from-blue-400/20 dark:to-purple-400/20 rounded-3xl blur-xl pointer-events-none" />
-            <div className="relative w-full border-2 border-gray-200 dark:border-gray-600/70 rounded-3xl bg-white/90 dark:bg-gray-800/90 shadow-xl focus-within:shadow-2xl">
+            <div className="absolute inset-0" style={{background: "rgba(124,179,66,0.1)"}} />
+            <div className="relative w-full border-2 border-gray-200 dark:border-[#7CB342]/30 rounded-3xl bg-white dark:bg-[#1E1E1E] shadow-xl focus-within:shadow-2xl focus-within:border-[#7CB342]">
               <input
                 type="text"
                 placeholder={
@@ -237,18 +245,18 @@ export default function ChatPage() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 disabled={loading}
-                className="w-full pl-6 pr-6 pt-4 pb-12 rounded-3xl bg-transparent text-gray-900 dark:text-gray-50 placeholder-gray-500 dark:placeholder-gray-400 text-base font-medium focus:outline-none"
+                className="w-full pl-6 pr-6 pt-4 pb-12 rounded-3xl bg-transparent text-[#1E1E1E] dark:text-white placeholder-gray-500 dark:placeholder-gray-400 text-base font-medium focus:outline-none"
               />
 
               <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between">
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="px-5 py-2 border-2 border-gray-200 dark:border-gray-600/70 rounded-2xl bg-white dark:bg-gray-800/90 text-gray-900 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700/80 hover:border-blue-400 dark:hover:border-blue-400/80 transition-all duration-300 shadow-lg hover:shadow-xl dark:shadow-gray-900/50 font-semibold text-sm min-w-[100px] group">
+                  <DropdownMenuTrigger className="px-5 py-2 border-2 border-gray-200 dark:border-[#7CB342]/30 rounded-2xl bg-white dark:bg-[#252722] text-[#252722] dark:text-white hover:bg-gray-50 dark:hover:bg-[#1E1E1E]/80 hover:border-[#7CB342] transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-sm min-w-[100px] group">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-300 bg-clip-text text-transparent">
+                      <span className="text-[#7CB342]">
                         {model.toUpperCase()}
                       </span>
                       <svg
-                        className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180 text-gray-600 dark:text-gray-300"
+                        className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180 text-[#252722] dark:text-white"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -262,76 +270,77 @@ export default function ChatPage() {
                       </svg>
                     </div>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-64 bg-white/98 dark:bg-gray-800/95 backdrop-blur-2xl border-2 border-gray-200/80 dark:border-gray-600/70 rounded-2xl shadow-2xl dark:shadow-gray-900/80 p-2">
-                    <DropdownMenuLabel className="font-bold text-gray-900 dark:text-gray-50 text-base px-3 py-2">
+                  <DropdownMenuContent className="w-64 bg-white dark:bg-[#252722] backdrop-blur-2xl border-2 border-gray-200 dark:border-[#7CB342]/30 rounded-2xl shadow-2xl p-2">
+                    <DropdownMenuLabel className="font-bold text-[#252722] dark:text-white text-base px-3 py-2">
                       🤖 Select AI Model
                     </DropdownMenuLabel>
-                    <DropdownMenuSeparator className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600/80 to-transparent my-2" />
+                    <DropdownMenuSeparator className="h-px bg-gray-300 dark:bg-[#7CB342]/30 my-2" />
 
                     <DropdownMenuItem
                       onClick={() => setModel("groq")}
-                      className="flex items-center justify-between py-3 px-3 cursor-pointer hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/40 dark:hover:to-purple-900/40 rounded-xl transition-all duration-200 group"
+                      className="flex items-center justify-between py-3 px-3 cursor-pointer hover:bg-[#7CB342]/10 rounded-xl transition-all duration-200 group"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 dark:from-emerald-400 dark:to-emerald-500 rounded-lg flex items-center justify-center shadow-md dark:shadow-emerald-900/50">
-                          <span className="text-white font-bold text-xs">
+                        <div className="w-8 h-8 bg-[#7CB342] rounded-lg flex items-center justify-center shadow-md">
+                          <span className="text-[#252722] font-bold text-xs">
                             G
                           </span>
                         </div>
-                        <span className="font-medium text-gray-800 dark:text-gray-100">
+                        <span className="font-medium text-[#252722] dark:text-white">
                           Groq
                         </span>
                       </div>
-                      <span className="text-xs bg-gradient-to-r from-emerald-500 to-green-500 dark:from-emerald-400 dark:to-green-400 text-white px-3 py-1 rounded-full font-bold shadow-md">
+                      <span className="text-xs bg-[#7CB342] text-[#252722] px-3 py-1 rounded-full font-bold shadow-md">
                         FREE
                       </span>
                     </DropdownMenuItem>
+                    
                     <DropdownMenuItem
                       onClick={() => setModel("gemini")}
-                      className="flex items-center justify-between py-3 px-3 cursor-pointer hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/40 dark:hover:to-purple-900/40 rounded-xl transition-all duration-200 group"
+                      className="flex items-center justify-between py-3 px-3 cursor-pointer hover:bg-[#7CB342]/10 rounded-xl transition-all duration-200 group"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 dark:from-blue-400 dark:to-blue-500 rounded-lg flex items-center justify-center shadow-md dark:shadow-emerald-900/50">
+                        <div className="w-8 h-8 bg-[#252722] rounded-lg flex items-center justify-center shadow-md">
                           <span className="text-white font-bold text-xs">
                             G
                           </span>
                         </div>
-                        <span className="font-medium text-gray-800 dark:text-gray-100">
+                        <span className="font-medium text-[#252722] dark:text-white">
                           Gemini
                         </span>
                       </div>
-                      <span className="text-xs bg-gradient-to-r from-emerald-500 to-green-500 dark:from-emerald-400 dark:to-green-400 text-white px-3 py-1 rounded-full font-bold shadow-md">
+                      <span className="text-xs bg-[#7CB342] text-[#252722] px-3 py-1 rounded-full font-bold shadow-md">
                         FREE
                       </span>
                     </DropdownMenuItem>
 
                     <DropdownMenuItem
                       onClick={() => setModel("openai")}
-                      className="flex items-center gap-3 py-3 px-3 cursor-pointer hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/40 dark:hover:to-purple-900/40 rounded-xl transition-all duration-200"
+                      className="flex items-center gap-3 py-3 px-3 cursor-pointer hover:bg-[#7CB342]/10 rounded-xl transition-all duration-200"
                     >
-                      <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 dark:from-purple-400 dark:to-pink-400 rounded-lg flex items-center justify-center shadow-md dark:shadow-purple-900/50">
+                      <div className="w-8 h-8 bg-[#252722] rounded-lg flex items-center justify-center shadow-md">
                         <span className="text-white font-bold text-xs">AI</span>
                       </div>
-                      <span className="font-medium text-gray-800 dark:text-gray-100">
+                      <span className="font-medium text-[#252722] dark:text-white">
                         OpenAI
                       </span>
                     </DropdownMenuItem>
 
                     <DropdownMenuItem
                       onClick={() => setModel("claude")}
-                      className="flex items-center gap-3 py-3 px-3 cursor-pointer hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/40 dark:hover:to-purple-900/40 rounded-xl transition-all duration-200"
+                      className="flex items-center gap-3 py-3 px-3 cursor-pointer hover:bg-[#7CB342]/10 rounded-xl transition-all duration-200"
                     >
-                      <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 dark:from-orange-400 dark:to-red-400 rounded-lg flex items-center justify-center shadow-md dark:shadow-red-900/50">
+                      <div className="w-8 h-8 bg-[#252722] rounded-lg flex items-center justify-center shadow-md">
                         <span className="text-white font-bold text-xs">C</span>
                       </div>
-                      <span className="font-medium text-gray-800 dark:text-gray-100">
+                      <span className="font-medium text-[#252722] dark:text-white">
                         Claude
                       </span>
                     </DropdownMenuItem>
 
-                    <DropdownMenuSeparator className="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600/80 to-transparent my-3" />
-                    <div className="px-3 py-2 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-xl border border-purple-200 dark:border-purple-600/50">
-                      <DropdownMenuLabel className="text-xs text-gray-700 dark:text-gray-200 font-medium mb-2 flex items-center gap-1">
+                    <DropdownMenuSeparator className="h-px bg-gray-300 dark:bg-[#7CB342]/30 my-3" />
+                    <div className="px-3 py-2 bg-[#7CB342]/10 rounded-xl border border-[#7CB342]/20">
+                      <DropdownMenuLabel className="text-xs text-[#252722] dark:text-white font-medium mb-2 flex items-center gap-1">
                         ✨ Premium Models Available
                       </DropdownMenuLabel>
                       <PaymentPage />
@@ -343,10 +352,10 @@ export default function ChatPage() {
                   type="submit"
                   disabled={loading || !input.trim()}
                   aria-label={loading ? "Creating chat" : "Start chat"}
-                  className="p-2 rounded-full bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 dark:from-blue-500 dark:via-purple-500 dark:to-blue-600 text-white hover:scale-110 active:scale-95 transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="p-2 rounded-full bg-[#7CB342] text-[#252722] hover:scale-110 active:scale-95 transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading || sending ? (
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-[#252722]/30 border-t-[#252722] rounded-full animate-spin" />
                   ) : (
                     <svg
                       className="w-5 h-5"
@@ -368,9 +377,9 @@ export default function ChatPage() {
           </form>
 
           {loading && (
-            <div className="absolute top-2 right-6 bg-gradient-to-r from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-400 text-white px-4 py-2 rounded-full text-xs font-medium shadow-lg animate-pulse border border-blue-300 dark:border-blue-500/50">
+            <div className="absolute top-2 right-6 bg-[#7CB342] text-[#252722] px-4 py-2 rounded-full text-xs font-medium shadow-lg animate-pulse border border-[#7CB342]/50">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-white rounded-full animate-bounce" />
+                <div className="w-2 h-2 bg-[#252722] rounded-full animate-bounce" />
                 <span>Preparing your chat...</span>
               </div>
             </div>

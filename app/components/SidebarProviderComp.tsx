@@ -15,11 +15,11 @@ const SidebarProviderComp = ({ children }: { children: React.ReactNode }) => {
      {
         session?.data?.user ? (
             <SidebarProvider>
-      <div className="flex w-full h-screen text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
+      <div className="flex w-full h-screen text-[#171B17] hover:text-[#9CEE69] dark:text-white dark:hover:text-[#9CEE69]">
         <AppSidebar />
 
         <main className="flex-1 flex flex-col h-full w-full ">
-          <div className="flex items-center justify-between bg-[#F8F3FC] dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-2 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between bg-white dark:bg-[#252722] text-[#171B17] dark:text-white p-2 border-b border-gray-200 dark:border-[#252722]/30">
             <SidebarTrigger />
             <ModeToggle />
           </div>
@@ -28,7 +28,7 @@ const SidebarProviderComp = ({ children }: { children: React.ReactNode }) => {
       </div>
     </SidebarProvider>
         ) : (
-            // <div className="flex items-center justify-center h-screen bg-[#F8F3FC] dark:bg-gray-900">
+            // <div className="flex items-center justify-center h-screen bg-white dark:bg-[#171B17]">
             //     <p className="text-gray-600 dark:text-gray-400">Please sign in to access the chat.</p>
             //       <SignIn />
 
