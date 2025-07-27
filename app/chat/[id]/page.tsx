@@ -119,7 +119,7 @@ export default function ChatPage() {
   const hasExchanges = chat && chat.exchanges && chat.exchanges.length > 0;
 
   return (
-    <div className="flex flex-col h-screen w-full overflow-hidden bg-[#F5F7F6] text-[#2E2E2E] dark:bg-[#252722] dark:text-white">
+    <div className="flex flex-col h-screen w-full overflow-hidden bg-[#F5FBEF] text-[#2E2E2E] dark:bg-[#252722] dark:text-white">
     
       <div className="flex-1 overflow-y-auto flex flex-col">
         <div className="w-full max-w-4xl mx-auto px-4 py-6 flex-1">
@@ -166,7 +166,7 @@ export default function ChatPage() {
 
                     <div className="flex flex-col justify-start items-start gap-2">
                       <div className="max-w-[80%] sm:max-w-[70%] lg:max-w-[60%]">
-                        <div className="bg-white dark:bg-[#1E1E1E] border border-gray-200 dark:border-[#7CB342]/30 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
+                        <div className="bg-[#F0F0E9] dark:bg-[#1E1E1E] border border-gray-200 dark:border-[#7CB342]/30 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
                           <div className="flex items-center gap-2 mb-2">
                             <div className="w-6 h-6 bg-[#1E1E1E] dark:bg-[#7CB342] rounded-full flex items-center justify-center">
                               <Bot className="w-3 h-3 text-white dark:text-[#1E1E1E]" />
@@ -232,11 +232,11 @@ export default function ChatPage() {
           <div ref={messagesEndRef} />
         </div>
       </div>
-      <div className="sticky bottom-0 left-0 w-full backdrop-blur-2xl border-t border-gray-200 dark:border-[#7CB342]/20 shadow-2xl px-4 py-4 bg-white/90 dark:bg-[#252722]/90">
+      <div className="sticky bottom-0 left-0 w-full backdrop-blur-2xl border-t border-gray-200 dark:border-[#7CB342]/20 shadow-2xl px-4 py-4 bg-[#F5FBEF]/90 dark:bg-[#252722]/90">
         <div className="max-w-4xl mx-auto w-full">
           <form onSubmit={handleSubmit} className="relative">
             <div className="absolute inset-0" style={{background: "rgba(124,179,66,0.1)"}} />
-            <div className="relative w-full border-2 border-gray-200 dark:border-[#7CB342]/30 rounded-3xl bg-white dark:bg-[#1E1E1E] shadow-xl focus-within:shadow-2xl focus-within:border-[#7CB342]">
+            <div className="relative w-full border-2 border-gray-200 dark:border-[#7CB342]/30 rounded-3xl bg-[#F0F0E9] dark:bg-[#1E1E1E] shadow-xl focus-within:shadow-2xl focus-within:border-[#7CB342]">
               <input
                 type="text"
                 placeholder={
@@ -250,7 +250,7 @@ export default function ChatPage() {
 
               <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between">
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="px-5 py-2 border-2 border-gray-200 dark:border-[#7CB342]/30 rounded-2xl bg-white dark:bg-[#252722] text-[#252722] dark:text-white hover:bg-gray-50 dark:hover:bg-[#1E1E1E]/80 hover:border-[#7CB342] transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-sm min-w-[100px] group">
+                  <DropdownMenuTrigger className="px-5 py-2 border-2 border-gray-200 dark:border-[#7CB342]/30 rounded-2xl bg-[#F5FBEF] dark:bg-[#252722] text-[#252722] dark:text-white hover:bg-gray-50 dark:hover:bg-[#1E1E1E]/80 hover:border-[#7CB342] transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-sm min-w-[100px] group">
                     <div className="flex items-center justify-between gap-2">
                       <span className="text-[#7CB342]">
                         {model.toUpperCase()}

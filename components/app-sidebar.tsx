@@ -62,7 +62,7 @@ export default function AppSidebar() {
 
   return (
     <Sidebar className="h-screen flex flex-col">
-      <SidebarContent className="h-full flex flex-col bg-white dark:bg-[#1F211C] overflow-hidden">
+      <SidebarContent className="h-full flex flex-col bg-[#F0F0E9] dark:bg-[#1F211C] overflow-hidden">
         <div className="flex-shrink-0">
           <SidebarGroupLabel className="text-2xl font-bold px-6 pb-4 pt-8 text-[#7CB342]">
             Chat-AI
@@ -105,9 +105,9 @@ export default function AppSidebar() {
                       href={`/chat/${chat.id}`}
                       className={`block w-full truncate rounded-lg p-2 text-sm text-left transition-colors ${
                         pathname === `/chat/${chat.id}`
-                          ? "bg-[#E9F0E8] font-medium text-[#1E1E1E] dark:text-white border border-[#CBD5D1]"
-                          : "text-[#1E1E1E] dark:text-white hover:bg-[#E9F0E8] hover:text-[#1E1E1E] dark:hover:text-white"
-                      }`}
+  ? "font-medium border border-[#CBD5D1] dark:border-[#9CEE69]/30 bg-[#E9F0E8] text-[#1E1E1E] dark:bg-[#7CB342]/20 dark:text-[#9CEE69]"
+  : "text-[#1E1E1E] hover:bg-[#E9F0E8] hover:text-[#1E1E1E] dark:text-[#CCCCCC] dark:hover:bg-[#7CB342]/20 dark:hover:text-[#9CEE69]"
+}`}
                       title={`Chat ${chat.id}`}
                     >
                       {`Chat ${chat.id.slice(0, 8)}...`}
