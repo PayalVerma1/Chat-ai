@@ -232,7 +232,7 @@ export default function ChatPage() {
           <div ref={messagesEndRef} />
         </div>
       </div>
-      <div className="sticky bottom-0 left-0 w-full backdrop-blur-2xl border-t border-gray-200 dark:border-[#7CB342]/20 shadow-2xl px-4 py-4 bg-[#F5FBEF]/90 dark:bg-[#252722]/90">
+      <div className="sticky bottom-0 left-0 w-full backdrop-blur-2xl shadow-2xl px-4 py-4 bg-[#F5FBEF]/90 dark:bg-[#252722]/90">
         <div className="max-w-4xl mx-auto w-full">
           <form onSubmit={handleSubmit} className="relative">
             <div className="absolute inset-0" style={{background: "rgba(124,179,66,0.1)"}} />

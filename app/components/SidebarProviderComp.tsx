@@ -19,7 +19,7 @@ const SidebarProviderComp = ({ children }: { children: React.ReactNode }) => {
         <AppSidebar />
 
         <main className="flex-1 flex flex-col h-full w-full ">
-          <div className="flex items-center justify-between bg-[#F5FBEF] dark:bg-[#252722] text-[#171B17] dark:text-white p-2 border-b border-gray-200 dark:border-[#252722]/30">
+          <div className="flex items-center justify-between bg-[#F5F7F6] dark:bg-[#252722] text-[#171B17] dark:text-white p-2 ">
             <SidebarTrigger />
             <ModeToggle />
           </div>
