@@ -122,7 +122,7 @@ export default function NewChatPage() {
                 <button
                   key={index}
                   onClick={() => setInput(prompt)}
-                  className="bg-white dark:bg-[#1E1E1E] border border-[#CBD5D1] dark:border-[#7CB342]/30 rounded-lg p-4 text-left shadow-sm hover:shadow-md hover:bg-[#E9F0E8] dark:hover:bg-[#7CB342]/20 dark:hover:border-[#7CB342] transition-all duration-200"
+                  className="bg-[#F5FBEF] dark:bg-[#1E1E1E] border border-[#CBD5D1] dark:border-[#7CB342]/30 rounded-lg p-4 text-left shadow-sm hover:shadow-md hover:bg-[#E9F0E8] dark:hover:bg-[#7CB342]/20 dark:hover:border-[#7CB342] transition-all duration-200"
                 >
                   <p className="font-semibold text-[#2E2E2E] dark:text-white">
                     {prompt}

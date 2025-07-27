@@ -109,6 +109,7 @@ export async function POST(req: NextRequest) {
             messages: [{ role: "user", content: prompt }],
           });
           aiResponse = groqResponse.choices[0].message.content ?? "";
+          
         } catch (error) {
           console.error("Groq Error:", error);
           return NextResponse.json(
@@ -144,6 +145,18 @@ export async function POST(req: NextRequest) {
           { status: 400 }
         );
     }
+    let title = prompt.slice(0, 30).trim() + "..."; 
+try {
+  const titleGen = await groq.chat.completions.create({
+  model: "mixtral-8x7b-32768", 
+  messages: [{ role: "user", content: `Summarize this into a short title:\n${prompt}` }],
+  max_tokens: 20,
+});
+
+  title = titleGen.choices[0]?.message?.content?.trim() || title;
+} catch (err) {
+  console.error("Title generation failed, using fallback:", err);
+}
 
     let chat;
     if (chatId) {
@@ -156,7 +169,10 @@ export async function POST(req: NextRequest) {
       }
     } else {
       chat = await prismaClient.chat.create({
-        data: { userId: user.id },
+        data: { userId: user.id ,
+           title,
+
+        },
       });
     }
     await prismaClient.pair.create({
