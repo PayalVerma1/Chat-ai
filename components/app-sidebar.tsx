@@ -65,7 +65,7 @@ export default function AppSidebar() {
       <SidebarContent className="h-full flex flex-col bg-[#F0F0E9] dark:bg-[#1F211C] overflow-hidden">
         <div className="flex-shrink-0">
           <SidebarGroupLabel className="text-2xl font-bold px-6 pb-4 pt-8 text-[#7CB342]">
-            Chat-AI
+            TOTO-AI
           </SidebarGroupLabel>
 
           <div className="px-3 pt-2 pb-3">

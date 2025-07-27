@@ -32,7 +32,7 @@ const SignupPage = () => {
               <div className="text-center space-y-3">
                 <div className="relative inline-block">
                   <h1 className="text-3xl font-extralight text-[#F5F7F6] tracking-[0.2em]">
-                    CHAT<span className="text-[#CBD5D1] font-light">-</span>
+                    TOTO<span className="text-[#CBD5D1] font-light">-</span>
                     <span className="text-[#7CB342] font-normal">AI</span>
                   </h1>
                   <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-12 h-[1px] bg-[#7CB342]/60"></div>
