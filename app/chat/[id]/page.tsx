@@ -21,7 +21,7 @@ export default function ChatPage() {
   const { id } = useParams();
   const router = useRouter();
   const { chat, addChat } = useChatStore();
-  const [copy, setCopy] = useState(false);
+  const [copy, setCopy] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
@@ -87,11 +87,11 @@ export default function ChatPage() {
     }
   };
   
-  const createCopy = async (textToCopy: string) => {
+  const createCopy = async (textToCopy: string , i:number) => {
     try {
       await navigator.clipboard.writeText(textToCopy);
-      setCopy(true);
-      setTimeout(() => setCopy(false), 2000);
+      setCopy(i);
+      setTimeout(() => setCopy(null), 2000);
     } catch (err) {
       console.error("Failed to copy text: ", err);
     }
@@ -135,7 +135,7 @@ export default function ChatPage() {
                   }
                   return Number(a.id) - Number(b.id);
                 })
-                .map((exchange) => (
+                .map((exchange,i) => (
                   <div key={exchange.id} className="flex flex-col space-y-4">
                     <div className="flex flex-col group items-end gap-2">
                       <div className="max-w-[80%] sm:max-w-[70%] lg:max-w-[60%] ">
@@ -152,11 +152,11 @@ export default function ChatPage() {
                         </div>
                       </div>
                       <button
-                        onClick={() => createCopy(exchange.prompt)}
+                        onClick={() => createCopy(exchange.prompt,i*2)}
                         className="p-2 rounded-s opacity-0 group-hover:opacity-100 transition"
                         title="Copy message"
                       >
-                        {copy ? (
+                        {copy===i*2 ? (
                           <Check className="w-4 h-4 text-[#1E1E1E] dark:text-white" />
                         ) : (
                           <Copy className="w-4 h-4 text-[#1E1E1E] dark:text-white" />
@@ -178,11 +178,11 @@ export default function ChatPage() {
                         </div>
                       </div>
                       <button
-                        onClick={() => createCopy(exchange.response)}
+                        onClick={() => createCopy(exchange.response,i*2+1)}
                         className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-[#7CB342]/20 transition mt-2"
                         title="Copy response"
                       >
-                        {copy ? (
+                        {copy===i*2+1 ? (
                           <Check className="w-4 h-4 text-[#1E1E1E] dark:text-white" />
                         ) : (
                           <Copy className="w-4 h-4 text-[#1E1E1E] dark:text-white" />
