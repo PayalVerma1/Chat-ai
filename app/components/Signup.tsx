@@ -17,8 +17,6 @@ const SignupPage = () => {
           }}
         ></div>
       </div>
-      
-      {/* Animated dots with green theme */}
       <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#7CB342]/40 rounded-full animate-pulse"></div>
       <div className="absolute top-3/4 right-1/3 w-1 h-1 bg-[#CBD5D1]/30 rounded-full animate-pulse delay-1000"></div>
       <div className="absolute bottom-1/4 left-1/3 w-1 h-1 bg-[#7CB342]/60 rounded-full animate-pulse delay-500"></div>

@@ -91,7 +91,9 @@ export default function NewChatPage() {
     } catch (error) {
       console.error("Error creating new chat:", error);
       if (axios.isAxiosError(error) && error.response?.status === 403) {
-        alert(error.response.data.error || "This model is for paid users only.");
+        alert(
+          error.response.data.error || "This model is for paid users only."
+        );
       }
       setLoading(false);
     }
@@ -137,159 +139,167 @@ export default function NewChatPage() {
         </div>
 
         <div className="sticky bottom-0 left-0 w-full backdrop-blur-2xl  shadow-2xl px-4 py-4 bg-[#F5F7F6] dark:bg-[#252722]/90">
-               <div className="max-w-4xl mx-auto w-full">
-                 <form onSubmit={handleSubmit} className="relative">
-                   <div className="absolute inset-0" style={{background: "rgba(124,179,66,0.1)"}} />
-                   <div className="relative w-full border-2 border-gray-200 dark:border-[#7CB342]/30 rounded-3xl bg-[#F0F0E9] dark:bg-[#1E1E1E] shadow-xl focus-within:shadow-2xl focus-within:border-[#7CB342]">
-                     <input
-                       type="text"
-                       placeholder={
-                         loading ? "✨ Creating your chat..." : "What's on your mind?"
-                       }
-                       value={input}
-                       onChange={(e) => setInput(e.target.value)}
-                       disabled={loading}
-                       className="w-full pl-6 pr-6 pt-4 pb-12 rounded-3xl bg-transparent text-[#1E1E1E] dark:text-white placeholder-gray-500 dark:placeholder-gray-400 text-base font-medium focus:outline-none"
-                     />
-       
-                     <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between">
-                       <DropdownMenu>
-                         <DropdownMenuTrigger className="px-5 py-2 border-2 border-gray-200 dark:border-[#7CB342]/30 rounded-2xl bg-[#F5FBEF] dark:bg-[#252722] text-[#252722] dark:text-white hover:bg-gray-50 dark:hover:bg-[#1E1E1E]/80 hover:border-[#7CB342] transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-sm min-w-[100px] group">
-                           <div className="flex items-center justify-between gap-2">
-                             <span className="text-[#7CB342]">
-                               {model.toUpperCase()}
-                             </span>
-                             <svg
-                               className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180 text-[#252722] dark:text-white"
-                               fill="none"
-                               stroke="currentColor"
-                               viewBox="0 0 24 24"
-                             >
-                               <path
-                                 strokeLinecap="round"
-                                 strokeLinejoin="round"
-                                 strokeWidth={2}
-                                 d="M19 9l-7 7-7-7"
-                               />
-                             </svg>
-                           </div>
-                         </DropdownMenuTrigger>
-                         <DropdownMenuContent className="w-64 bg-white dark:bg-[#252722] backdrop-blur-2xl border-2 border-gray-200 dark:border-[#7CB342]/30 rounded-2xl shadow-2xl p-2">
-                           <DropdownMenuLabel className="font-bold text-[#252722] dark:text-white text-base px-3 py-2">
-                             🤖 Select AI Model
-                           </DropdownMenuLabel>
-                           <DropdownMenuSeparator className="h-px bg-gray-300 dark:bg-[#7CB342]/30 my-2" />
-       
-                           <DropdownMenuItem
-                             onClick={() => setModel("groq")}
-                             className="flex items-center justify-between py-3 px-3 cursor-pointer hover:bg-[#7CB342]/10 rounded-xl transition-all duration-200 group"
-                           >
-                             <div className="flex items-center gap-3">
-                               <div className="w-8 h-8 bg-[#7CB342] rounded-lg flex items-center justify-center shadow-md">
-                                 <span className="text-[#252722] font-bold text-xs">
-                                   G
-                                 </span>
-                               </div>
-                               <span className="font-medium text-[#252722] dark:text-white">
-                                 Groq
-                               </span>
-                             </div>
-                             <span className="text-xs bg-[#7CB342] text-[#252722] px-3 py-1 rounded-full font-bold shadow-md">
-                               FREE
-                             </span>
-                           </DropdownMenuItem>
-                           
-                           <DropdownMenuItem
-                             onClick={() => setModel("gemini")}
-                             className="flex items-center justify-between py-3 px-3 cursor-pointer hover:bg-[#7CB342]/10 rounded-xl transition-all duration-200 group"
-                           >
-                             <div className="flex items-center gap-3">
-                               <div className="w-8 h-8 bg-[#252722] rounded-lg flex items-center justify-center shadow-md">
-                                 <span className="text-white font-bold text-xs">
-                                   G
-                                 </span>
-                               </div>
-                               <span className="font-medium text-[#252722] dark:text-white">
-                                 Gemini
-                               </span>
-                             </div>
-                             <span className="text-xs bg-[#7CB342] text-[#252722] px-3 py-1 rounded-full font-bold shadow-md">
-                               FREE
-                             </span>
-                           </DropdownMenuItem>
-       
-                           <DropdownMenuItem
-                             onClick={() => setModel("openai")}
-                             className="flex items-center gap-3 py-3 px-3 cursor-pointer hover:bg-[#7CB342]/10 rounded-xl transition-all duration-200"
-                           >
-                             <div className="w-8 h-8 bg-[#252722] rounded-lg flex items-center justify-center shadow-md">
-                               <span className="text-white font-bold text-xs">AI</span>
-                             </div>
-                             <span className="font-medium text-[#252722] dark:text-white">
-                               OpenAI
-                             </span>
-                           </DropdownMenuItem>
-       
-                           <DropdownMenuItem
-                             onClick={() => setModel("claude")}
-                             className="flex items-center gap-3 py-3 px-3 cursor-pointer hover:bg-[#7CB342]/10 rounded-xl transition-all duration-200"
-                           >
-                             <div className="w-8 h-8 bg-[#252722] rounded-lg flex items-center justify-center shadow-md">
-                               <span className="text-white font-bold text-xs">C</span>
-                             </div>
-                             <span className="font-medium text-[#252722] dark:text-white">
-                               Claude
-                             </span>
-                           </DropdownMenuItem>
-       
-                           <DropdownMenuSeparator className="h-px bg-gray-300 dark:bg-[#7CB342]/30 my-3" />
-                           <div className="px-3 py-2 bg-[#7CB342]/10 rounded-xl border border-[#7CB342]/20">
-                             <DropdownMenuLabel className="text-xs text-[#252722] dark:text-white font-medium mb-2 flex items-center gap-1">
-                               ✨ Premium Models Available
-                             </DropdownMenuLabel>
-                             <PaymentPage />
-                           </div>
-                         </DropdownMenuContent>
-                       </DropdownMenu>
-       
-                       <button
-                         type="submit"
-                         disabled={loading || !input.trim()}
-                         aria-label={loading ? "Creating chat" : "Start chat"}
-                         className="p-2 rounded-full bg-[#7CB342] text-[#252722] hover:scale-110 active:scale-95 transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                       >
-                         {loading ? (
-                           <div className="w-4 h-4 border-2 border-[#252722]/30 border-t-[#252722] rounded-full animate-spin" />
-                         ) : (
-                           <svg
-                             className="w-5 h-5"
-                             fill="none"
-                             stroke="currentColor"
-                             viewBox="0 0 24 24"
-                           >
-                             <path
-                               strokeLinecap="round"
-                               strokeLinejoin="round"
-                               strokeWidth={2}
-                               d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                             />
-                           </svg>
-                         )}
-                       </button>
-                     </div>
-                   </div>
-                 </form>
-       
-                 {loading && (
-                   <div className="absolute top-2 right-6 bg-[#7CB342] text-[#252722] px-4 py-2 rounded-full text-xs font-medium shadow-lg animate-pulse border border-[#7CB342]/50">
-                     <div className="flex items-center gap-2">
-                       <div className="w-2 h-2 bg-[#252722] rounded-full animate-bounce" />
-                       <span>Preparing your chat...</span>
-                     </div>
-                   </div>
-                 )}
-               </div>
-             </div>
+          <div className="max-w-4xl mx-auto w-full">
+            <form onSubmit={handleSubmit} className="relative">
+              <div
+                className="absolute inset-0"
+              />
+              <div className="relative w-full border-2 border-gray-200 dark:border-[#7CB342]/30 rounded-3xl bg-[#F0F0E9] dark:bg-[#1E1E1E] shadow-xl focus-within:shadow-2xl focus-within:border-[#7CB342]">
+                <input
+                  type="text"
+                  placeholder={
+                    loading
+                      ? "✨ Creating your chat..."
+                      : "What's on your mind?"
+                  }
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  disabled={loading}
+                  className="w-full pl-6 pr-6 pt-4 pb-12 rounded-3xl bg-transparent text-[#1E1E1E] dark:text-white placeholder-gray-500 dark:placeholder-gray-400 text-base font-medium focus:outline-none"
+                />
+
+                <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="px-5 py-2 border-2 border-gray-200 dark:border-[#7CB342]/30 rounded-2xl bg-[#F5FBEF] dark:bg-[#252722] text-[#252722] dark:text-white hover:bg-gray-50 dark:hover:bg-[#1E1E1E]/80 hover:border-[#7CB342] transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-sm min-w-[100px] group">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-[#7CB342]">
+                          {model.toUpperCase()}
+                        </span>
+                        <svg
+                          className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180 text-[#252722] dark:text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-64 bg-white dark:bg-[#252722] backdrop-blur-2xl border-2 border-gray-200 dark:border-[#7CB342]/30 rounded-2xl shadow-2xl p-2">
+                      <DropdownMenuLabel className="font-bold text-[#252722] dark:text-white text-base px-3 py-2">
+                        🤖 Select AI Model
+                      </DropdownMenuLabel>
+                      <DropdownMenuSeparator className="h-px bg-gray-300 dark:bg-[#7CB342]/30 my-2" />
+
+                      <DropdownMenuItem
+                        onClick={() => setModel("groq")}
+                        className="flex items-center justify-between py-3 px-3 cursor-pointer hover:bg-[#7CB342]/10 rounded-xl transition-all duration-200 group"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-[#7CB342] rounded-lg flex items-center justify-center shadow-md">
+                            <span className="text-[#252722] font-bold text-xs">
+                              G
+                            </span>
+                          </div>
+                          <span className="font-medium text-[#252722] dark:text-white">
+                            Groq
+                          </span>
+                        </div>
+                        <span className="text-xs bg-[#7CB342] text-[#252722] px-3 py-1 rounded-full font-bold shadow-md">
+                          FREE
+                        </span>
+                      </DropdownMenuItem>
+
+                      <DropdownMenuItem
+                        onClick={() => setModel("gemini")}
+                        className="flex items-center justify-between py-3 px-3 cursor-pointer hover:bg-[#7CB342]/10 rounded-xl transition-all duration-200 group"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-[#252722] rounded-lg flex items-center justify-center shadow-md">
+                            <span className="text-white font-bold text-xs">
+                              G
+                            </span>
+                          </div>
+                          <span className="font-medium text-[#252722] dark:text-white">
+                            Gemini
+                          </span>
+                        </div>
+                        <span className="text-xs bg-[#7CB342] text-[#252722] px-3 py-1 rounded-full font-bold shadow-md">
+                          FREE
+                        </span>
+                      </DropdownMenuItem>
+
+                      <DropdownMenuItem
+                        onClick={() => setModel("openai")}
+                        className="flex items-center gap-3 py-3 px-3 cursor-pointer hover:bg-[#7CB342]/10 rounded-xl transition-all duration-200"
+                      >
+                        <div className="w-8 h-8 bg-[#252722] rounded-lg flex items-center justify-center shadow-md">
+                          <span className="text-white font-bold text-xs">
+                            AI
+                          </span>
+                        </div>
+                        <span className="font-medium text-[#252722] dark:text-white">
+                          OpenAI
+                        </span>
+                      </DropdownMenuItem>
+
+                      <DropdownMenuItem
+                        onClick={() => setModel("claude")}
+                        className="flex items-center gap-3 py-3 px-3 cursor-pointer hover:bg-[#7CB342]/10 rounded-xl transition-all duration-200"
+                      >
+                        <div className="w-8 h-8 bg-[#252722] rounded-lg flex items-center justify-center shadow-md">
+                          <span className="text-white font-bold text-xs">
+                            C
+                          </span>
+                        </div>
+                        <span className="font-medium text-[#252722] dark:text-white">
+                          Claude
+                        </span>
+                      </DropdownMenuItem>
+
+                      <DropdownMenuSeparator className="h-px bg-gray-300 dark:bg-[#7CB342]/30 my-3" />
+                      <div className="px-3 py-2 bg-[#7CB342]/10 rounded-xl border border-[#7CB342]/20">
+                        <DropdownMenuLabel className="text-xs text-[#252722] dark:text-white font-medium mb-2 flex items-center gap-1">
+                          ✨ Premium Models Available
+                        </DropdownMenuLabel>
+                        <PaymentPage />
+                      </div>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+
+                  <button
+                    type="submit"
+                    disabled={loading || !input.trim()}
+                    aria-label={loading ? "Creating chat" : "Start chat"}
+                    className="p-2 rounded-full bg-[#7CB342] text-[#252722] hover:scale-110 active:scale-95 transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {loading ? (
+                      <div className="w-4 h-4 border-2 border-[#252722]/30 border-t-[#252722] rounded-full animate-spin" />
+                    ) : (
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                        />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            {loading && (
+              <div className="absolute top-2 right-6 bg-[#7CB342] text-[#252722] px-4 py-2 rounded-full text-xs font-medium shadow-lg animate-pulse border border-[#7CB342]/50">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-[#252722] rounded-full animate-bounce" />
+                  <span>Preparing your chat...</span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
