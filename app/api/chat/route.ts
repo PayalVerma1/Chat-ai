@@ -144,10 +144,10 @@ export async function POST(req: NextRequest) {
           { status: 400 }
         );
     }
-    let title = prompt.slice(0, 30).trim() ;
+    let title;
     try {
       const titleGen = await groq.chat.completions.create({
-        model: "mixtral-8x7b-32768",
+        model: "llama3-70b-8192",
         messages: [
           {
             role: "user",
@@ -157,7 +157,7 @@ export async function POST(req: NextRequest) {
         max_tokens: 20,
       });
 
-      title = titleGen.choices[0]?.message?.content?.trim() || title;
+      title = titleGen.choices[0]?.message?.content?.trim();
     } catch (err) {
       console.error("Title generation failed, using fallback:", err);
     }
