@@ -7,6 +7,7 @@ import { Loader2, Bot } from "lucide-react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import PaymentPage from "@/app/components/payments";
 import { Check } from "lucide-react";
+import Markdown from "react-markdown";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -172,9 +173,9 @@ export default function ChatPage() {
                               <Bot className="w-3 h-3 text-white dark:text-[#1E1E1E]" />
                             </div>
                           </div>
-                          <p className="text-sm sm:text-base text-[#1E1E1E] dark:text-white whitespace-pre-wrap break-words leading-relaxed">
-                            {exchange.response}
-                          </p>
+                          <div className="text-sm sm:text-base text-[#1E1E1E] dark:text-white whitespace-pre-wrap break-words leading-relaxed">
+                            <Markdown>{exchange.response}</Markdown>
+                          </div>
                         </div>
                       </div>
                       <button
