@@ -107,6 +107,7 @@ export async function POST(req: NextRequest) {
           const groqResponse = await groq.chat.completions.create({
             model: "llama3-70b-8192",
             messages: [{ role: "user", content: prompt }],
+             max_tokens: 100,
           });
           aiResponse = groqResponse.choices[0].message.content ?? "";
         } catch (error) {
@@ -121,6 +122,7 @@ export async function POST(req: NextRequest) {
         const model = gemini.getGenerativeModel({ model: "gemini-1.5-flash" });
         const result = await model.generateContent(prompt);
         const response = result.response;
+        
         aiResponse = response.text();
         break;
 
@@ -128,6 +130,7 @@ export async function POST(req: NextRequest) {
         const openaiResponse = await openai.chat.completions.create({
           model: "gpt-4o",
           messages: [{ role: "user", content: prompt }],
+           max_tokens: 100,
         });
         aiResponse = openaiResponse.choices[0].message.content ?? "";
         break;
@@ -154,7 +157,7 @@ export async function POST(req: NextRequest) {
             content: `Summarize this into a short title:\n${prompt}`,
           },
         ],
-        max_tokens: 20,
+        max_tokens: 10,
       });
 
       title = titleGen.choices[0]?.message?.content?.trim();
