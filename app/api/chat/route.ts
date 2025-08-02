@@ -89,7 +89,7 @@ export async function POST(req: NextRequest) {
       user.subscription.status === "captured" &&
       user.subscription.plan === "Pro";
     if (
-      (modelProvider === "openai" || modelProvider === "claude") &&
+      (modelProvider === "openai" || modelProvider === "claude"  || modelProvider === "Gemini-2.5-pro") &&
       !isPaidUser
     ) {
       return NextResponse.json(
@@ -107,7 +107,6 @@ export async function POST(req: NextRequest) {
           const groqResponse = await groq.chat.completions.create({
             model: "llama3-70b-8192",
             messages: [{ role: "user", content: prompt }],
-           
           });
           aiResponse = groqResponse.choices[0].message.content ?? "";
         } catch (error) {
@@ -122,15 +121,23 @@ export async function POST(req: NextRequest) {
         const model = gemini.getGenerativeModel({ model: "gemini-1.5-flash" });
         const result = await model.generateContent(prompt);
         const response = result.response;
-        
+
         aiResponse = response.text();
+        break;
+      case "Gemini-2.5-pro":
+        const geminiModel = gemini.getGenerativeModel({
+          model: "gemini-2.5-pro",
+        });
+        const geminiResult = await geminiModel.generateContent(prompt);
+        const geminiResponse = geminiResult.response;
+        aiResponse = geminiResponse.text();
+        console.log("Gemini Response:", aiResponse);
         break;
 
       case "openai":
         const openaiResponse = await openai.chat.completions.create({
           model: "gpt-4o",
           messages: [{ role: "user", content: prompt }],
-          
         });
         aiResponse = openaiResponse.choices[0].message.content ?? "";
         break;

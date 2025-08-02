@@ -314,6 +314,21 @@ export default function ChatPage() {
                         FREE
                       </span>
                     </DropdownMenuItem>
+                     <DropdownMenuItem
+                      onClick={() => setModel("Gemini-2.5-pro")}
+                      className="flex items-center justify-between py-3 px-3 cursor-pointer hover:bg-[#7CB342]/10 rounded-xl transition-all duration-200 group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-[#7CB342] rounded-lg flex items-center justify-center shadow-md">
+                          <span className="text-[#252722] font-bold text-xs">
+                            G
+                          </span>
+                        </div>
+                        <span className="font-medium text-[#252722] dark:text-white">
+                          Gemini-2.5-pro
+                        </span>
+                      </div>
+                    </DropdownMenuItem>
 
                     <DropdownMenuItem
                       onClick={() => setModel("openai")}
