@@ -105,7 +105,7 @@ export async function POST(req: NextRequest) {
       case "groq":
         try {
           const groqResponse = await groq.chat.completions.create({
-            model: "llama3-70b-8192",
+            model: "llama-3.3-70b-versatile",
             messages: [{ role: "user", content: prompt }],
           });
           aiResponse = groqResponse.choices[0].message.content ?? "";
@@ -157,7 +157,7 @@ export async function POST(req: NextRequest) {
     let title;
     try {
       const titleGen = await groq.chat.completions.create({
-        model: "llama3-70b-8192",
+        model: "llama-3.3-70b-versatile",
         messages: [
           {
             role: "user",
