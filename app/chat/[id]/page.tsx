@@ -87,6 +87,29 @@ export default function ChatPage() {
       setSending(false);
     }
   };
+  const sendToLLM = async (message: string) => {
+    setSending(true);
+    setInput("");
+    try {
+      const chatId = Array.isArray(id) ? id[0] : id;
+      const res = await axios.post("/api/chat", {
+        prompt: message && chat,
+        chatId: chatId,
+        modelProvider: model,
+      });
+      addChat(res.data);
+    } catch (error: any) {
+      console.error("Error sending message:", error);
+      alert("Failed to send message. Please try again.");
+      if (axios.isAxiosError(error) && error.response?.status === 403) {
+        alert(
+          error.response.data.error || "This model is for paid users only."
+        );
+      }
+    } finally {
+      setSending(false);
+    }
+  };
   
   const createCopy = async (textToCopy: string , i:number) => {
     try {

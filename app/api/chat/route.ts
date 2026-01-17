@@ -118,22 +118,13 @@ export async function POST(req: NextRequest) {
         }
         break;
       case "gemini":
-        const model = gemini.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = gemini.getGenerativeModel({ model: "gemini-2.5-flash" });
         const result = await model.generateContent(prompt);
         const response = result.response;
 
         aiResponse = response.text();
         break;
-      case "Gemini-2.5-pro":
-        const geminiModel = gemini.getGenerativeModel({
-          model: "gemini-2.5-pro",
-        });
-        const geminiResult = await geminiModel.generateContent(prompt);
-        const geminiResponse = geminiResult.response;
-        aiResponse = geminiResponse.text();
-        console.log("Gemini Response:", aiResponse);
-        break;
-
+     
       case "openai":
         const openaiResponse = await openai.chat.completions.create({
           model: "gpt-4o",
