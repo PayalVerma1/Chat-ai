@@ -150,8 +150,34 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Chat not found" }, { status: 404 });
       }
     } else {
+      let title: string | undefined;
+      try {
+        const t = await groq.chat.completions.create({
+          model: "llama-3.3-70b-versatile",
+          messages: [
+            {
+              role: "user",
+              content: `Generate a short (3-6 word) descriptive title for this chat based on the user's first message:\n${prompt}`,
+            },
+          ],
+          max_tokens: 12,
+        });
+        title = t?.choices?.[0]?.message?.content?.trim();
+      } catch (err) {
+        console.error("Title generation failed:", err);
+      }
+
+      if (!title || title.length === 0) {
+        const firstLine = (prompt || "").split(/\n/)[0].trim();
+        if (firstLine.length > 0) {
+          title = firstLine.length > 60 ? `${firstLine.slice(0, 60)}...` : firstLine;
+        } else {
+          title = `Chat ${Date.now().toString(36)}`;
+        }
+      }
+
       chat = await prismaClient.chat.create({
-        data: { userId: user.id },
+        data: { userId: user.id, title },
       });
     }
 
