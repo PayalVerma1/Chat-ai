@@ -27,6 +27,7 @@ model User {
 model Chat {
   id             String        @id @default(uuid())
   user           User          @relation(fields: [userId], references: [id]) // Connects to User
+  summary        String?
   userId         String
   subscription   Subscription? @relation(fields: [subscriptionId], references: [id])
   subscriptionId String?
