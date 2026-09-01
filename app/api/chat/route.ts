@@ -5,6 +5,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { prismaClient } from "@/lib/db";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
+import { logMonitor, monitor } from "@/lib/monitor";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -46,7 +47,7 @@ async function summarizeChat(
     .join("\n");
 
   const res = await groq.chat.completions.create({
-    model: "llama-3.3-70b-versatile",
+    model: "openai/gpt-oss-20b",
     messages: [
       {
         role: "system",
@@ -95,7 +96,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ chats: user?.chats ?? [] }, { status: 200 });
   } catch (error) {
-    console.error("GET Chat Error:", error);
+    logMonitor("error", `GET Chat Error: ${error instanceof Error ? error.message : String(error)}`);
     return NextResponse.json(
       { message: "Internal server error" },
       { status: 500 },
@@ -111,6 +112,7 @@ export async function POST(req: NextRequest) {
     }
 
     const { prompt, chatId, modelProvider } = await req.json();
+    logMonitor("info", `Chat request — model: ${modelProvider ?? "groq"}, user: ${session.user.email}`);
     if (!prompt) {
       return NextResponse.json(
         { error: "No content provided" },
@@ -160,11 +162,11 @@ export async function POST(req: NextRequest) {
               content: `Generate a short (3-6 word) descriptive title for this chat based on the user's first message:\n${prompt}`,
             },
           ],
-          max_tokens: 12,
+          max_tokens: 5,
         });
         title = t?.choices?.[0]?.message?.content?.trim();
       } catch (err) {
-        console.error("Title generation failed:", err);
+        logMonitor("warn", `Title generation failed: ${err instanceof Error ? err.message : String(err)}`);
       }
 
       if (!title || title.length === 0) {
@@ -262,8 +264,10 @@ export async function POST(req: NextRequest) {
       include: { exchanges: true },
     });
 
+    logMonitor("info", `Chat response sent — model: ${modelProvider ?? "groq"}, chatId: ${updatedChat?.id}`);
     return NextResponse.json(updatedChat, { status: 200 });
   } catch (error) {
+    logMonitor("error", `POST Chat Error: ${error instanceof Error ? error.message : String(error)}`);
     console.error("POST Chat Error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
@@ -295,6 +299,7 @@ export async function DELETE(req: NextRequest) {
       { status: 200 },
     );
   } catch (error) {
+    logMonitor("error", `DELETE Chat Error: ${error instanceof Error ? error.message : String(error)}`);
     console.error("DELETE Chat Error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
