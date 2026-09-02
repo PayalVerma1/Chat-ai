@@ -155,7 +155,7 @@ export async function POST(req: NextRequest) {
       let title: string | undefined;
       try {
         const t = await groq.chat.completions.create({
-          model: "llama-3.3-70b-versatile",
+          model: "openai/gpt-oss-20b",
           messages: [
             {
               role: "user",
@@ -194,7 +194,7 @@ export async function POST(req: NextRequest) {
     switch (modelProvider || "groq") {
       case "groq": {
         const res = await groq.chat.completions.create({
-          model: "llama-3.3-70b-versatile",
+          model: "openai/gpt-oss-20b",
           messages,
         });
         aiResponse = res.choices[0].message.content ?? "";
